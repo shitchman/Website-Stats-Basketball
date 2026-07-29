@@ -1,0 +1,77 @@
+{% extends 'dashboard_base.html' %}
+
+{% block content %}
+  <div class="card">
+    <h2>Profile</h2>
+    <form method="post">
+      <input type="hidden" name="form_type" value="profile">
+      <div class="form-row">
+        <input type="text" name="in_game_username" placeholder="In-Game Username" value="{{ profile['in_game_username'] or '' }}">
+        <button type="submit">Save Profile</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>Builds</h2>
+    <form method="post" style="margin-bottom: 24px;">
+      <input type="hidden" name="form_type" value="build">
+      <div class="form-row">
+        <input type="text" name="build_name" placeholder="Build Name" required>
+        <select name="height" required>
+          <option value="">Select Height</option>
+          <option value="6'0">6'0"</option>
+          <option value="6'1">6'1"</option>
+          <option value="6'2">6'2"</option>
+          <option value="6'3">6'3"</option>
+          <option value="6'4">6'4"</option>
+          <option value="6'5">6'5"</option>
+          <option value="6'6">6'6"</option>
+          <option value="6'7">6'7"</option>
+          <option value="6'8">6'8"</option>
+          <option value="6'9">6'9"</option>
+          <option value="6'10">6'10"</option>
+          <option value="6'11">6'11"</option>
+          <option value="7'0">7'0"</option>
+          <option value="7'1">7'1"</option>
+          <option value="7'2">7'2"</option>
+          <option value="7'3">7'3"</option>
+          <option value="7'4">7'4"</option>
+
+        </select>
+        <select name="position" required>
+          <option value="">Select Position</option>
+          <option value="Point Guard">Point Guard</option>
+          <option value="Shooting Guard">Shooting Guard</option>
+          <option value="Small Forward">Small Forward</option>
+          <option value="Power Forward">Power Forward</option>
+          <option value="Center">Center</option>
+        </select>
+      </div>
+      <button type="submit">Add Build</button>
+    </form>
+
+    {% if builds %}
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Height</th>
+            <th>Position</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for build in builds %}
+            <tr>
+              <td>{{ build['build_name'] }}</td>
+              <td>{{ build['height'] }}</td>
+              <td>{{ build['position'] }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No builds created yet.</p>
+    {% endif %}
+  </div>
+{% endblock %}

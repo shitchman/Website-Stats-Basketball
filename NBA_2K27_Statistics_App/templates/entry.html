@@ -1,0 +1,67 @@
+{% extends 'dashboard_base.html' %}
+
+{% block content %}
+  <div class="card">
+    <h2>Enter Basketball Stats</h2>
+    <form method="post">
+      <div class="form-row">
+        <div>
+          <label for="player_name">Player Name</label>
+          <input id="player_name" name="player_name" type="text" required>
+        </div>
+        <div>
+          <label for="game_date">Game Date</label>
+          <input id="game_date" name="game_date" type="date" required>
+        </div>
+      </div>
+
+      <label for="position">Position</label>
+      <select id="position" name="position" required>
+        <option value="">Select position</option>
+        <option value="PG">PG</option>
+        <option value="SG">SG</option>
+        <option value="SF">SF</option>
+        <option value="PF">PF</option>
+        <option value="C">C</option>
+      </select>
+
+      <div class="form-row">
+        <div>
+          <label for="points">Points</label>
+          <input id="points" name="points" type="number" min="0" value="0">
+        </div>
+        <div>
+          <label for="rebounds">Rebounds</label>
+          <input id="rebounds" name="rebounds" type="number" min="0" value="0">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div>
+          <label for="assists">Assists</label>
+          <input id="assists" name="assists" type="number" min="0" value="0">
+        </div>
+        <div>
+          <label for="steals">Steals</label>
+          <input id="steals" name="steals" type="number" min="0" value="0">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div>
+          <label for="blocks">Blocks</label>
+          <input id="blocks" name="blocks" type="number" min="0" value="0">
+        </div>
+        <div>
+          <label for="turnovers">Turnovers</label>
+          <input id="turnovers" name="turnovers" type="number" min="0" value="0">
+        </div>
+      </div>
+
+      <label for="fouls">Fouls</label>
+      <input id="fouls" name="fouls" type="number" min="0" value="0">
+
+      <button type="submit">Save Stats</button>
+    </form>
+  </div>
+{% endblock %}
