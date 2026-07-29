@@ -35,3 +35,5 @@ if __name__ == '__main__':
     # Disable the Werkzeug reloader to avoid SystemExit(3) when running
     # under the VS Code debugpy launcher.
     app.run(debug=True, use_reloader=False)
+
+    # Initial commit. Has mulitple basic pages (Login/Register, Home, Profile, Friends, Add Game). You can navigate these pages with buttons and also logout from the profiles page.  Within that page the user is also able to add their builds with a name, height and position.
