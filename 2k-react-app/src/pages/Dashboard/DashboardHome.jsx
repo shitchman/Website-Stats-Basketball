@@ -1,16 +1,38 @@
 import { useEffect } from "react";
-import { Col, Container, Row, Card} from "react-bootstrap";
+import { Col, Container, Row, Card, Table} from "react-bootstrap";
 
 function DashboardHome() {
 
-    // This will not be kept in the long term
-    const playerStats = [
+    // This will not be kept in the long term, these will be stored in python files most likely
+    const teamStats = [
     { id: 1, title: "Games Tracked", value: 28 },
-    { id: 2, title: "Team PPG", value: 12},
-    { id: 3, title: "Team RPG", value: 28},
-    { id: 4, title: "Team APG", value: 28 },
-    { id: 5, title: "Team SPG", value: 12},
-    { id: 6, title: "Team BPG", value: 28}
+    { id: 2, title: "Team PPG", value: 89.5},
+    { id: 3, title: "Team RPG", value: 36.2},
+    { id: 4, title: "Team APG", value: 25.7 },
+    { id: 5, title: "Team SPG", value: 6.3},
+    { id: 6, title: "Team BPG", value: 3.4}
+];
+
+    const gameStats = [
+    { id: 1, date: "1/1/26", build: 11, pointsFor: 11, pointsAgainst: 11, result: "W", points: 11, rebounds: 11, assists: 11, steals: 11, blocks: 11},
+    { id: 2, date: "2/2/26", build: 22, pointsFor: 22, pointsAgainst: 22, result: "L", points: 22, rebounds: 22, assists: 22, steals: 22, blocks: 22},
+    { id: 3, date: "3/3/26", build: 33, pointsFor: 33, pointsAgainst: 33, result: "W", points: 33, rebounds: 33, assists: 33, steals: 33, blocks: 33},
+    { id: 4, date: "4/4/26", build: 44, pointsFor: 44, pointsAgainst: 44, result: "W", points: 4, rebounds: 44, assists: 44, steals: 44, blocks: 44},
+    { id: 5, date: "5/5/26", build: 55, pointsFor: 55, pointsAgainst: 55, result: "W", points: 55, rebounds: 55, assists: 55, steals: 55, blocks: 55},
+    { id: 6, date: "6/6/26", build: 66, pointsFor: 66, pointsAgainst: 66, result: "L", points: 66, rebounds: 66, assists: 66, steals: 66, blocks: 66},
+    { id: 7, date: "7/7/26", build: 77, pointsFor: 77, pointsAgainst: 77, result: "L", points: 77, rebounds: 77, assists: 77, steals: 77, blocks: 77},
+    { id: 8, date: "8/8/26", build: 88, pointsFor: 88, pointsAgainst: 88, result: "W", points: 88, rebounds: 88, assists: 88, steals: 88, blocks: 88},
+    { id: 9, date: "9/9/26", build: 99, pointsFor: 99, pointsAgainst: 99, result: "W", points: 99, rebounds: 99, assists: 99, steals: 99, blocks: 99},
+    { id: 10, date: "10/10/26", build: 100, pointsFor: 100, pointsAgainst: 100, result: "L", points: 100, rebounds: 100, assists: 100, steals: 100, blocks: 100}
+];
+
+    const friendStats = [
+    { id: 1, name: "player1", ppg: 17.76, games: 410, winPercentage: 49.8},
+    { id: 2, name: "player2", ppg: 16.38, games: 153, winPercentage: 46.4},
+    { id: 3, name: "player3", ppg: 15.31, games: 299, winPercentage: 48.2},
+    { id: 4, name: "player4", ppg: 20.12, games: 155, winPercentage: 51.3},
+    { id: 5, name: "player5", ppg: 12.54, games: 73, winPercentage: 42.6},
+    { id: 6, name: "player6", ppg: 7.83, games: 67, winPercentage: 50.3}
 ];
 
     useEffect(() => {
@@ -18,514 +40,175 @@ function DashboardHome() {
     }, []);
 
     return (
-        <Container fluid className="pb-3">
-            <Row className="d-flex align-items-stretch">
+        <Container fluid className="justify-content-center">            
+            <Row className="d-flex align-items-stretch w-100 justify-content-center mx-0">
                 {/* Just username section */}
-                <Col md={6} className="mt-3 d-flex">
+                <Col sm={12} xl={6} className="mt-3 d-flex flex-column">
 
-                    <Card className="hero-card w-100 h-100">
+                    <Card className="hero-card w-100 flex-grow-1">
                         <div className="hero-glow hero-glow-bottom-right" aria-hidden="true"></div>
                         <div className="hero-glow hero-glow-top-left" aria-hidden="true"></div>
 
-                        <Card.Body className="hero-content text-white rounded-4 w-100 h-100 p-3">
-                                <Row>
-                                    <h1>TheEvasiveSloth</h1>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <p>Wins</p>
-                                        <h5>68</h5>
-                                    </Col>
-                                    <Col>
-                                        <p>Loses</p>
-                                        <h5>55</h5>
-                                    </Col>
-                                    <Col>
-                                        <p>Win %</p>
-                                        <h5>55.28%</h5>
-                                </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <p>Career High Points</p>
-                                        <h5>36</h5>
-                                    </Col>
-                                    <Col>
-                                        <p>PPG</p>
-                                        <h5>14.63</h5>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <p>Triple Doubles</p>
-                                        <h5>4</h5>
-                                    </Col>
-                                    <Col>
-                                        <p>Double Doubles</p>
-                                        <h5>30</h5>
-                                </Col>
-                                </Row>
-                            {/* </div> */}
+                        <Card.Body className="hero-content text-white rounded-4 w-100 flex-grow-1 p-3">
+                            <Table className="dashboard-tables user-table" responsive>
+                                <thead>
+                                    <tr>
+                                        <th colSpan={6}><h2>Username</h2></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {/* Row with 3 columns */}
+                                    <tr>
+                                        <td colSpan={2}>
+                                            <p className="mb-0" style={{textAlign: "left"}}>Wins</p>
+                                            <h1 className="text-white">68</h1>
+                                        </td>
+                                        <td colSpan={2}>
+                                            <p className="mb-0" style={{textAlign: "left"}}>Losses</p>
+                                            <h1 className="text-white">55</h1>
+                                        </td>
+                                        <td colSpan={2}>
+                                            <p style={{textAlign: "left"}}>Win %</p>
+                                            <h1 className="text-white">55.28</h1>
+                                        </td>
+                                    </tr>
+
+                                    {/* Row with 2 columns */}
+                                    <tr>
+                                        <td colSpan={2}>
+                                            <p className="mb-0" style={{textAlign: "left"}}>Double Doubles</p>
+                                            <h1 className="text-white">30</h1>
+                                        </td>
+                                        <td colSpan={2}>
+                                            <p className="mb-0" style={{textAlign: "left"}}>Triple Doubles</p>
+                                            <h1 className="text-white">4</h1>
+                                        </td>
+                                        <td colSpan={2}>
+                                            <p className="mb-0" style={{textAlign: "left"}}>Career High</p>
+                                            <h1 className="text-white">45</h1>
+                                        </td>
+                                    </tr>
+
+                                    {/* Another row with 2 columns */}
+                                    <tr>
+                                        <td colSpan={2}>
+                                            <p className="mb-0" style={{textAlign: "left"}}>PPG</p>
+                                            <h1 className="text-white">14.63</h1>
+                                        </td>
+                                        <td colSpan={2}>
+                                            <p className="mb-0" style={{textAlign: "left"}}>RPG</p>
+                                            <h1 className="text-white">10.2</h1>
+                                        </td>
+                                        <td colSpan={2}>
+                                            <p className="mb-0" style={{textAlign: "left"}}>APG</p>
+                                            <h1 className="text-white">5.47</h1>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </Table>
                         </Card.Body>
                     </Card>
                 </Col>
                 {/* Just FRIENDS container */}
-                <Col md={6} className="mt-3 d-flex">
+                <Col sm={12} xl={6} className="mt-3 d-flex flex-column">
 
-                    <Card className="hero-card w-100 h-100">
+                    <Card className="hero-card w-100 flex-grow-1">
                         <div className="hero-glow hero-glow-bottom-right" aria-hidden="true"></div>
                         <div className="hero-glow hero-glow-top-left" aria-hidden="true"></div>
 
-                        <Card.Body className="hero-content text-white rounded-4 w-100 h-100 p-3">
-                            <Row>
-                                <Col>
-                                    <h1>Friends</h1>
-                                </Col>
-                                <Col>
-                                    <h1>PPG</h1>
-                                </Col>
-                                <Col>
-                                    <h1>Win %</h1>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <h1>Joel</h1>
-                                </Col>
-                                <Col>
-                                    <h1>20.27</h1>
-                                </Col>
-                                <Col>
-                                    <h1>71.3%</h1>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <h1>Dominic</h1>
-                                </Col>
-                                <Col>
-                                    <h1>13.62</h1>
-                                </Col>
-                                <Col>
-                                    <h1>58.3%</h1>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <h1>Tom</h1>
-                                </Col>
-                                <Col>
-                                    <h1>17.89</h1>
-                                </Col>
-                                <Col>
-                                    <h1>78.3%</h1>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <h1>Noah</h1>
-                                </Col>
-                                <Col>
-                                    <h1>16.38</h1>
-                                </Col>
-                                <Col>
-                                    <h1>52.7%</h1>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <h1>Caleb</h1>
-                                </Col>
-                                <Col>
-                                    <h1>12.73</h1>
-                                </Col>
-                                <Col>
-                                    <h1>38.94%</h1>
-                                </Col>
-                            </Row>
+                        <Card.Body className="hero-content text-white rounded-4 w-100 flex-grow-1">
+                            <Table className="recent-games-table dashboard-tables" responsive >
+                                <thead>
+                                        <th>Name</th>
+                                        <th>PPG</th>
+                                        <th>Games</th>
+                                        <th>W%</th>
+                                </thead>
+
+                                <tbody>
+                                    {friendStats.map((stat, index) => (
+                                        <tr key={stat.id || index}>
+                                            <td>{stat.name}</td>
+                                            <td>{stat.ppg}</td>
+                                            <td>{stat.games}</td>
+                                            <td><span className={stat.winPercentage > 50 ? "text-success" : "text-danger"}>{stat.winPercentage}</span></td>
+                                        </tr>
+                                    ))}  
+                                </tbody>
+                            </Table>
                         </Card.Body>
+
                     </Card>
+
+
                 </Col>
             </Row>
 
             {/* Team Stats */}
-            <Row className="d-flex align-items-stretch pt-3 pb-3">
-                {playerStats.map((stat) => (
-                    <Col xs={4} md={2} key={stat.id} className="mb-3">
-                        <div className="bg-dark rounded h-100 p-1">
-                            <p className="mb-1">{stat.title}</p>
-                            <h2 className="mb-0">{stat.value}</h2>
+            <Row className="d-flex align-items-stretch pt-3 pb-3 justify-content-center">
+                {teamStats.map((stat) => (
+                    <Col xs={12} sm={4} xl={2} key={stat.id} className="d-flex align-items-stretch justify-content-center">
+                        <div className="rounded flex-fill p-1 d-flex">
+                            <Card className="hero-card w-100 h-100">
+                                <div className="hero-glow hero-glow-top-right" aria-hidden="true"></div>
+                                <div className="hero-glow hero-glow-bottom-left" aria-hidden="true"></div>
+
+                                <Card.Body className="hero-content text-white w-100 h-100 p-3 d-flex flex-column">
+                                    <p className="mb-1" style={{ color: "rgba(145, 148, 148, 1.0)", textAlign: "left" }}>{stat.title}</p>
+
+                                    <div className="flex-grow-1 d-flex justify-content-center align-items-center">
+                                        <h2 className="mb-0 text-white" style={{ color: "rgba(145, 148, 148, 1.0)" }} > {stat.value}</h2>
+                                    </div>
+                                </Card.Body>
+                            </Card> 
                         </div>
                     </Col>
                 ))}
             </Row>
 
             {/* Recent Games */}
-            <Col className="bg-dark rounded w-100 p-3">
-                {/* Headings */}
-                <Row>
-                    <Col>
-                        Date
-                    </Col>
-                    <Col>
-                        Build
-                    </Col>
-                    <Col>
-                        PF
-                    </Col>
-                    <Col>
-                        PA
-                    </Col>
-                    <Col>
-                        Result
-                    </Col>
-                    <Col>
-                        PTS
-                    </Col>
-                    <Col>
-                        REB
-                    </Col>
-                    <Col>
-                        AST
-                    </Col>
-                    <Col>
-                        STL
-                    </Col>
-                    <Col>
-                        BLK
-                    </Col>
-                </Row>
-                {/* Game 1 */}
-                <Row>
-                    <Col>
-                        Date
-                    </Col>
-                    <Col>
-                        Build
-                    </Col>
-                    <Col>
-                        PF
-                    </Col>
-                    <Col>
-                        PA
-                    </Col>
-                    <Col>
-                        Result
-                    </Col>
-                    <Col>
-                        PTS
-                    </Col>
-                    <Col>
-                        REB
-                    </Col>
-                    <Col>
-                        AST
-                    </Col>
-                    <Col>
-                        STL
-                    </Col>
-                    <Col>
-                        BLK
-                    </Col>
-                </Row>
-                {/* Game 2 */}
-                <Row>
-                    <Col>
-                        Date
-                    </Col>
-                    <Col>
-                        Build
-                    </Col>
-                    <Col>
-                        PF
-                    </Col>
-                    <Col>
-                        PA
-                    </Col>
-                    <Col>
-                        Result
-                    </Col>
-                    <Col>
-                        PTS
-                    </Col>
-                    <Col>
-                        REB
-                    </Col>
-                    <Col>
-                        AST
-                    </Col>
-                    <Col>
-                        STL
-                    </Col>
-                    <Col>
-                        BLK
-                    </Col>
-                </Row>
-                {/* Game 3 */}
-                <Row>
-                    <Col>
-                        Date
-                    </Col>
-                    <Col>
-                        Build
-                    </Col>
-                    <Col>
-                        PF
-                    </Col>
-                    <Col>
-                        PA
-                    </Col>
-                    <Col>
-                        Result
-                    </Col>
-                    <Col>
-                        PTS
-                    </Col>
-                    <Col>
-                        REB
-                    </Col>
-                    <Col>
-                        AST
-                    </Col>
-                    <Col>
-                        STL
-                    </Col>
-                    <Col>
-                        BLK
-                    </Col>
-                </Row>
-                {/* Game 4 */}
-                <Row>
-                    <Col>
-                        Date
-                    </Col>
-                    <Col>
-                        Build
-                    </Col>
-                    <Col>
-                        PF
-                    </Col>
-                    <Col>
-                        PA
-                    </Col>
-                    <Col>
-                        Result
-                    </Col>
-                    <Col>
-                        PTS
-                    </Col>
-                    <Col>
-                        REB
-                    </Col>
-                    <Col>
-                        AST
-                    </Col>
-                    <Col>
-                        STL
-                    </Col>
-                    <Col>
-                        BLK
-                    </Col>
-                </Row>
-                {/* Game 5 */}
-                <Row>
-                    <Col>
-                        Date
-                    </Col>
-                    <Col>
-                        Build
-                    </Col>
-                    <Col>
-                        PF
-                    </Col>
-                    <Col>
-                        PA
-                    </Col>
-                    <Col>
-                        Result
-                    </Col>
-                    <Col>
-                        PTS
-                    </Col>
-                    <Col>
-                        REB
-                    </Col>
-                    <Col>
-                        AST
-                    </Col>
-                    <Col>
-                        STL
-                    </Col>
-                    <Col>
-                        BLK
-                    </Col>
-                </Row>
-                {/* Game 6 */}
-                <Row>
-                    <Col>
-                        Date
-                    </Col>
-                    <Col>
-                        Build
-                    </Col>
-                    <Col>
-                        PF
-                    </Col>
-                    <Col>
-                        PA
-                    </Col>
-                    <Col>
-                        Result
-                    </Col>
-                    <Col>
-                        PTS
-                    </Col>
-                    <Col>
-                        REB
-                    </Col>
-                    <Col>
-                        AST
-                    </Col>
-                    <Col>
-                        STL
-                    </Col>
-                    <Col>
-                        BLK
-                    </Col>
-                </Row>
-                {/* Game 7 */}
-                <Row>
-                    <Col>
-                        Date
-                    </Col>
-                    <Col>
-                        Build
-                    </Col>
-                    <Col>
-                        PF
-                    </Col>
-                    <Col>
-                        PA
-                    </Col>
-                    <Col>
-                        Result
-                    </Col>
-                    <Col>
-                        PTS
-                    </Col>
-                    <Col>
-                        REB
-                    </Col>
-                    <Col>
-                        AST
-                    </Col>
-                    <Col>
-                        STL
-                    </Col>
-                    <Col>
-                        BLK
-                    </Col>
-                </Row>
-                {/* Game 8 */}
-                <Row>
-                    <Col>
-                        Date
-                    </Col>
-                    <Col>
-                        Build
-                    </Col>
-                    <Col>
-                        PF
-                    </Col>
-                    <Col>
-                        PA
-                    </Col>
-                    <Col>
-                        Result
-                    </Col>
-                    <Col>
-                        PTS
-                    </Col>
-                    <Col>
-                        REB
-                    </Col>
-                    <Col>
-                        AST
-                    </Col>
-                    <Col>
-                        STL
-                    </Col>
-                    <Col>
-                        BLK
-                    </Col>
-                </Row>
-                {/* Game 9 */}
-                <Row>
-                    <Col>
-                        Date
-                    </Col>
-                    <Col>
-                        Build
-                    </Col>
-                    <Col>
-                        PF
-                    </Col>
-                    <Col>
-                        PA
-                    </Col>
-                    <Col>
-                        Result
-                    </Col>
-                    <Col>
-                        PTS
-                    </Col>
-                    <Col>
-                        REB
-                    </Col>
-                    <Col>
-                        AST
-                    </Col>
-                    <Col>
-                        STL
-                    </Col>
-                    <Col>
-                        BLK
-                    </Col>
-                </Row>
-                {/* Game 10 */}
-                <Row>
-                    <Col>
-                        Date
-                    </Col>
-                    <Col>
-                        Build
-                    </Col>
-                    <Col>
-                        PF
-                    </Col>
-                    <Col>
-                        PA
-                    </Col>
-                    <Col>
-                        Result
-                    </Col>
-                    <Col>
-                        PTS
-                    </Col>
-                    <Col>
-                        REB
-                    </Col>
-                    <Col>
-                        AST
-                    </Col>
-                    <Col>
-                        STL
-                    </Col>
-                    <Col>
-                        BLK
-                    </Col>
-                </Row>
-                
+            <Col className="rounded w-100 p-3 d-flex justify-content-cente ">
+                <Card className="hero-card w-100 h-100">
+                    <div className="hero-glow hero-glow-bottom-right" aria-hidden="true"></div>
+                    <div className="hero-glow hero-glow-top-left" aria-hidden="true"></div>
+
+                    <Card.Body className="hero-content text-white rounded-4 w-100 h-100 p-3">
+                        <Table className="recent-games-table dashboard-tables" responsive >
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Build</th>
+                                    <th>PF</th>
+                                    <th>PA</th>
+                                    <th>W/L</th>
+                                    <th>PTS</th>
+                                    <th>REB</th>
+                                    <th>AST</th>
+                                    <th>STL</th>
+                                    <th>BLK</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {gameStats.map((stat, index) => (
+                                    <tr key={stat.id || index}>
+                                        <td>{stat.date}</td>
+                                        <td>{stat.build}</td>
+                                        <td>{stat.pointsFor}</td>
+                                        <td>{stat.pointsAgainst}</td>
+                                        <td><span className={stat.result === "W" ? "text-success" : "text-danger"}>{stat.result}</span></td>
+                                        <td>{stat.points}</td>
+                                        <td>{stat.rebounds}</td>
+                                        <td>{stat.assists}</td>
+                                        <td>{stat.steals}</td>
+                                        <td>{stat.blocks}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    </Card.Body>
+                </Card>
             </Col>  
         </Container>
     );

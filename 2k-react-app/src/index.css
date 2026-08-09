@@ -15,7 +15,7 @@
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
-  font: 18px/145% var(--sans);
+  font: clamp(16px, 1vw + 1px, 18px)/145% var(--sans);
   letter-spacing: 0.18px;
   color-scheme: light dark;
   color: var(--text);
@@ -24,10 +24,6 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -84,22 +80,18 @@ h1,h2 {
 }
 
 h1 {
-  font-size: 56px;
+  font-size: clamp(32px, 4.5vw, 56px);
   letter-spacing: -1.68px;
   margin: 32px 0;
   @media (max-width: 1024px) {
-    font-size: 36px;
     margin: 20px 0;
   }
 }
 h2 {
-  font-size: 24px;
+  font-size: clamp(18px, 2.5vw, 24px);
   line-height: 118%;
   letter-spacing: -0.24px;
   margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
 }
 p {
   margin: 0;
@@ -114,7 +106,7 @@ code,
 }
 
 code {
-  font-size: 15px;
+  font-size: clamp(13px, 1vw, 15px);
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
@@ -128,7 +120,7 @@ code {
 }
 
 .auth-content p {
-  font-size: 16px;
+  font-size: clamp(14px, 1.4vw, 16px);
   margin: 0;
   overflow-wrap: break-word;
 }
@@ -147,28 +139,20 @@ code {
   background-position: top;
 }
 
-.responsive-container {
-  max-width: 100%;
-}
-
-/* Used to set the user adn friend blocks on the dashboardHome to split on larger screens  */
-@media (min-width: 992px) {
-  .responsive-container {
-    max-width: 50%;
-  }
-}
-
 .box {
   background: #eee;
   padding: 20px;
   border-radius: 10px;
 }
 
+
+
 /* Used to set the colors of the blocks in dashboard */
 .bg-darker {
-  /* Dashboard card background — uses a CSS variable with a solid fallback */
   background-color: var(--dashboard-card-bg, #0D0D0D);
 }
+
+
 
 /* Test for the glowing blocks */
 .hero-card {
@@ -179,15 +163,18 @@ code {
     flex-direction: column;
     width: 100%;
     height: 100%; /* Makes the card match the column height so the visual block fills properly. */
-    min-height: 220px;
+    min-height: 120px;
 
     border-radius: 1.5rem;
     border: 1px solid rgba(255, 102, 0, 0.35);
     background: linear-gradient(135deg, #050505 0%, #111111 100%); /* Gives the card a richer dark background. */
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35); /* Adds depth so the card stands out from the page. */
 
-    padding: 2rem;
     color: white;
+}
+
+.hero-card .card-body {
+  flex: 1;
 }
 
 .hero-content {
@@ -235,40 +222,121 @@ code {
     left: -15%;
 }
 
-@media (min-width:768px){
 
-    .hero-card {
-        padding:2.5rem;
-    }
-
-}
-
-/* Dashboard root background — controllable via --dashboard-bg */
+/* Sets the background of the page to black*/
 .dashboard-root {
-  height: 100vh;
+  min-height: 100vh;
   background-size: cover;
   background-position: top;
   background-color: var(--dashboard-bg, #000000);
 }
 
+
+
 /* Remove the dropdown caret and keep the navbar height stable */
-.dashboard-dropdown > .dropdown-toggle::after,
-.dashboard-dropdown .dropdown-toggle::after {
-  display: none !important;
+.dashboard-dropdown {
+  position: relative;
 }
 .dashboard-dropdown .dropdown-toggle {
   padding-right: 0.5rem;
   border: none;
   background: transparent;
+  color: white !important;
 }
-.dashboard-dropdown {
-  position: relative;
+.dashboard-dropdown > .dropdown-toggle::after,
+.dashboard-dropdown .dropdown-toggle::after {
+  display: none !important;
 }
 .dashboard-dropdown .dropdown-menu {
   position: absolute !important;
   top: 100% !important;
   left: 0 !important;
+
   margin-top: 0.25rem !important;
   min-width: 10rem;
+
   width: auto;
+
+  color: white;
+
+  background-color: #212529;
+  border: 1px solid #333333;
+}
+.dashboard-dropdown .dropdown-item {
+    color: white;
+}
+.dashboard-dropdown .dropdown-item:hover {
+    background-color: #ff6600;
+    color: white;
+}
+
+
+
+
+/* All tables */
+
+/* Remove Bootstrap cell backgrounds, this sets the backgroud to tranparent */
+.dashboard-tables > :not(caption) > * > * {
+    background-color: transparent !important;
+    color: white;;
+}
+
+/* Text color in table data cells.*/
+.dashboard-tables td {
+    color:  rgba(145, 148, 148, 1.0) !important;
+    text-align: center;
+}
+
+
+
+/* STATS TABLE STUFF */
+
+/* Outside border */
+.recent-games-table {
+    border: 4px solid rgba(145, 148, 148, 1.0) !important; 
+}
+
+/* Table heading settings */
+.recent-games-table thead th {
+    color: rgba(255, 102, 0, 0.95) !important;
+    padding: 0.75rem;
+    text-align: center;
+
+    border-bottom: 4px solid rgba(145, 148, 148, 1.0) !important;
+}
+
+/* Sets the vertical interior borders to dashed */
+.recent-games-table td:not(:last-child),
+.recent-games-table th:not(:last-child) {
+    border-right: 2px dashed rgba(145, 148, 148, 1.0);
+}
+
+/* Sets the vertical interior borders to dashed */
+.recent-games-table td:not(:last-child),
+.recent-games-table th:not(:last-child) {
+    border-right: 2px dashed rgba(145, 148, 148, 1.0);
+}
+
+/* Effects the table data cells.*/
+.recent-games-tables td {
+    border-bottom: transparent;
+}
+
+
+
+/* User table */
+
+/* Table heading settings */
+.user-table thead th {
+    color: rgba(255, 102, 0, 0.95) !important;
+    padding: 0.75rem;
+    text-align: center;
+
+    border-bottom: transparent;
+}
+
+
+/* Makes the border transparent.*/
+.user-table td {
+    border-bottom: transparent;
 }

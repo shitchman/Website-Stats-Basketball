@@ -1,5 +1,5 @@
 .counter {
-  font-size: 16px;
+  font-size: clamp(14px, 1vw, 16px);
   padding: 5px 10px;
   border-radius: 5px;
   color: var(--accent);
@@ -117,9 +117,7 @@
 
   a {
     color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
+      font-size: clamp(14px, 1vw, 16px);
     display: flex;
     padding: 6px 12px;
     align-items: center;
