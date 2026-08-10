@@ -39,7 +39,7 @@ function BaseAuthentication({children, setCurrentPage}) {
             </Container>
         </Navbar>
 
-            <div className="hero-overlay d-flex">
+            <div className="mills-hero-overlay d-flex">
                 <Container fluid className="mt-4">
                     {children}
                 </Container>  

@@ -35,7 +35,6 @@ function App() {
                 return ( <AddGames setCurrentPage={setCurrentPage}/> );
             case 'stats':
                 return ( <Stats setCurrentPage={setCurrentPage}/> );
-
             case 'profile':
                 return ( <Profile setCurrentPage={setCurrentPage}/> );
 
@@ -46,7 +45,7 @@ function App() {
 
 if (authPages.includes(currentPage)) {
     return (
-        <BaseAuthentication setCurrentPage={setCurrentPage}>
+        <BaseAuthentication setCurrentPage={setCurrentPage} currentPage={currentPage}>
             {renderPage()}
         </BaseAuthentication>
     );
@@ -54,14 +53,14 @@ if (authPages.includes(currentPage)) {
 
 if (dashboardPages.includes(currentPage)) {
     return (
-        <BaseDashboard setCurrentPage={setCurrentPage}>
+        <BaseDashboard setCurrentPage={setCurrentPage} currentPage={currentPage}>
             {renderPage()}
         </BaseDashboard>
     );
 }
 
 
-// Need to actually fix this to show an error page, maybe say 'an unknown error has occured, please login again
+// Need to actually fix this to show an error message, maybe say 'an unknown error has occured, please login again
 return (
     <BaseAuthentication setCurrentPage={setCurrentPage}> 
         {renderPage()}

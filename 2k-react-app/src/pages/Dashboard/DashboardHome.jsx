@@ -41,10 +41,10 @@ function DashboardHome() {
 
     return (
         <Container fluid className="justify-content-center">            
-            <Row className="d-flex align-items-stretch w-100 justify-content-center mx-0">
+            <Row className="d-flex align-items-stretch w-100 justify-content-center mx-0" >
                 {/* Just username section */}
                 <Col sm={12} xl={6} className="mt-3 d-flex flex-column">
-
+                    
                     <Card className="hero-card w-100 flex-grow-1">
                         <div className="hero-glow hero-glow-bottom-right" aria-hidden="true"></div>
                         <div className="hero-glow hero-glow-top-left" aria-hidden="true"></div>
@@ -53,12 +53,13 @@ function DashboardHome() {
                             <Table className="dashboard-tables user-table" responsive>
                                 <thead>
                                     <tr>
-                                        <th colSpan={6}><h2>Username</h2></th>
+                                        <th colSpan={6}>
+                                            <h1>Quick stats: Username</h1>
+                                        </th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    {/* Row with 3 columns */}
                                     <tr>
                                         <td colSpan={2}>
                                             <p className="mb-0" style={{textAlign: "left"}}>Wins</p>
@@ -69,12 +70,11 @@ function DashboardHome() {
                                             <h1 className="text-white">55</h1>
                                         </td>
                                         <td colSpan={2}>
-                                            <p style={{textAlign: "left"}}>Win %</p>
+                                            <p className="mb-0" style={{textAlign: "left"}}>Win %</p>
                                             <h1 className="text-white">55.28</h1>
-                                        </td>
+                                        </td>                                        
                                     </tr>
 
-                                    {/* Row with 2 columns */}
                                     <tr>
                                         <td colSpan={2}>
                                             <p className="mb-0" style={{textAlign: "left"}}>Double Doubles</p>
@@ -90,7 +90,6 @@ function DashboardHome() {
                                         </td>
                                     </tr>
 
-                                    {/* Another row with 2 columns */}
                                     <tr>
                                         <td colSpan={2}>
                                             <p className="mb-0" style={{textAlign: "left"}}>PPG</p>
@@ -118,6 +117,8 @@ function DashboardHome() {
                         <div className="hero-glow hero-glow-top-left" aria-hidden="true"></div>
 
                         <Card.Body className="hero-content text-white rounded-4 w-100 flex-grow-1">
+                            <h1 style={{ color: "rgba(255, 102, 0, 0.95)"}}>Friends</h1>
+                            <p className="fw-light" style={{ color: "rgba(145, 148, 148, 1.0)"}}>Performance overview </p>
                             <Table className="recent-games-table dashboard-tables" responsive >
                                 <thead>
                                         <th>Name</th>
@@ -146,7 +147,26 @@ function DashboardHome() {
             </Row>
 
             {/* Team Stats */}
-            <Row className="d-flex align-items-stretch pt-3 pb-3 justify-content-center">
+
+
+            <Row className="d-flex align-items-stretch pt-3 pb-3 justify-content-center dashed-border mt-3">
+                {/* Team Stats Title */}
+                <Row className="d-flex pt-3 pb-3 justify-content-center">
+                    <Col xs={12} sm={8} xl={8} className="d-flex justify-content-center">
+                        <div className="rounded flex-fill p-1 d-flex">
+                            <Card className="hero-card w-100 h-100">
+                                <div className="hero-glow hero-glow-top-right" aria-hidden="true"></div>
+                                <div className="hero-glow hero-glow-bottom-left" aria-hidden="true"></div>
+
+                                <Card.Body className="hero-content text-white w-100 h-100 p-3 d-flex flex-column">
+                                    <h1 style={{ color: "rgba(255, 102, 0, 0.95)"}}>Team Insights</h1>
+                                    <p className="fw-light" style={{ color: "rgba(145, 148, 148, 1.0)"}}>Total games submitted and averages for five key categories</p>
+                                </Card.Body>
+                            </Card>
+                        </div>
+                    </Col>               
+                </Row>
+                {/* Team Stats Data */}
                 {teamStats.map((stat) => (
                     <Col xs={12} sm={4} xl={2} key={stat.id} className="d-flex align-items-stretch justify-content-center">
                         <div className="rounded flex-fill p-1 d-flex">
@@ -174,6 +194,9 @@ function DashboardHome() {
                     <div className="hero-glow hero-glow-top-left" aria-hidden="true"></div>
 
                     <Card.Body className="hero-content text-white rounded-4 w-100 h-100 p-3">
+                        <h1 style={{ color: "rgba(255, 102, 0, 0.95)"}}>Recent Games</h1>
+                        <p className="fw-light" style={{ color: "rgba(145, 148, 148, 1.0)"}}>Game and Box Score summaries of your most recent games </p>
+
                         <Table className="recent-games-table dashboard-tables" responsive >
                             <thead>
                                 <tr>
