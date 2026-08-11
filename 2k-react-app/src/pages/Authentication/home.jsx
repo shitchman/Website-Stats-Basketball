@@ -17,8 +17,8 @@ function Home() {
 
                 <Col className="auth-content text-center ms-5 mt-5" style={{ flex: '0 0 390px', maxWidth: '100%', width: '390px' }}>
                     <h1>Welcome to Hoop Stats</h1>
-                    <p className="mt-2"> The number one destination for virtual and 
-                        <br /> real world basketball statistics and analysis.</p>
+                    <p className="mt-2"> The number one destination for virtual 
+                        <br /> basketball statistics and analysis.</p>
                 </Col>
             </Row>
         </Container>

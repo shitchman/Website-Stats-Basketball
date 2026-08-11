@@ -128,6 +128,7 @@ code {
 }
 
 
+/* BACKGROUNDS */
 
 /* This is for young Pattrick on the authentication pages */
 .mills-hero-overlay {
@@ -143,22 +144,21 @@ code {
   background-position: top;
 }
 /* This is for background of the dashboard pages */
-.crowd-hero-overlay {
+.jordan-hero-overlay {
   position: relative;
   min-height: 100vh;
   color: white;
   display: flex;
   overflow: hidden;
 }
-
-.crowd-hero-overlay::before {
+.jordan-hero-overlay::before {
   content: "";
   position: absolute;
   inset: 0;
 
   background: 
     linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-    url("./assets/background.png");
+    url("./assets/JordanShot.png");
 
   background-size: cover;
   background-position: center;
@@ -167,8 +167,28 @@ code {
   transform: scale(1.05); 
   z-index: 0;
 }
+.jordan-hero-overlay > * {
+  position: relative;
+  z-index: 1;
+}
+/* Background for modals in profile page */
+.boomers-hero-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
 
-.crowd-hero-overlay > * {
+  background: 
+    linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
+    url("./assets/BoomersBronze.png");
+
+  background-size: cover;
+  background-position: center;
+
+  filter: blur(13px);
+  transform: scale(1.05); 
+  z-index: 0;
+}
+.boomers-hero-overlay > * {
   position: relative;
   z-index: 1;
 }
@@ -201,6 +221,7 @@ code {
     width: 100%;
     height: 100%; /* Makes the card match the column height so the visual block fills properly. */
     min-height: 120px;
+    max-height: 450px;
 
     border-radius: 1.5rem;
     border: 1px solid rgba(255, 102, 0, 0.35);
@@ -266,19 +287,20 @@ code {
   position: relative;
 }
 .dashboard-dropdown .dropdown-toggle {
-  padding-right: 0.5rem;
   border: none;
   background: transparent;
   color: white !important;
 }
-.dashboard-dropdown > .dropdown-toggle::after,
+.dashboard-dropdown .dropdown-toggle::before {
+  display: none !important;
+}
 .dashboard-dropdown .dropdown-toggle::after {
   display: none !important;
 }
 .dashboard-dropdown .dropdown-menu {
   position: absolute !important;
   top: 100% !important;
-  left: 0 !important;
+  right: 0 !important;
 
   margin-top: 0.25rem !important;
   min-width: 10rem;
@@ -394,3 +416,44 @@ code {
     border: 2px dashed white;
     border-radius: 1rem;
 }
+
+
+
+/* Sets a custom break point for the columns within the heading rows within the profile page */
+@media (max-width: 420px) {
+    .small-profile-custom-col {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    .large-profile-custom-col {
+      flex: 0 0 100% !important;
+      max-width: 100% !important;
+
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+      .large-profile-header-custom-col {
+      flex: 0 0 100% !important;
+      max-width: 100% !important;
+
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+}
+
+
+/* Makes the page information blurry when the Modal is active */
+.modal-backdrop.show {
+    backdrop-filter: blur(12px);
+    background-color: rgba(0, 0, 0, 0.6);
+}
+

@@ -1,4 +1,5 @@
 Font weight
+
  - fw-light
  - fw-normal
  - fw-medium
@@ -6,7 +7,7 @@ Font weight
  - fw-bold
  - fw-bolder
 
-Standard variants
+Standard variants (color schemes)
 
 | `primary`   | Blue            |
 | `secondary` | Grey            |
@@ -17,3 +18,11 @@ Standard variants
 | `light`     | Light grey      |
 | `dark`      | Dark grey/black |
 
+Limiting columns width
+
+ - xs
+ - sm
+ - md
+ - lg
+ - xl
+ - xxl

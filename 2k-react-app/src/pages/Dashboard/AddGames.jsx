@@ -1,7 +1,12 @@
 import { Card, Container, Row, Col } from "react-bootstrap";
 import { BsUpload } from "react-icons/bs";
+import { useEffect } from "react";
 
 function AddGames() {
+
+    useEffect(() => {
+      document.title = "Hoop Stats - Add Game";
+    }, []);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0]; if (file) {
@@ -33,12 +38,14 @@ function AddGames() {
         </Col>
       </Row>
 
-    {/* Link to add new scorecard */}
+    {/* Link to upload photo of new scorecard */}
       <Row>
         <Col>
           <Card className="hero-card mb-4">
             <div className="hero-glow hero-glow-top-right"></div>
             <div className="hero-glow hero-glow-top-left"></div>
+            <div className="hero-glow hero-glow-bottom-right"></div>
+            <div className="hero-glow hero-glow-bottom-left"></div>
 
             <Card.Body className="hero-content text-white">
               <Row className="justify-content-center">
@@ -46,7 +53,7 @@ function AddGames() {
                   <label className="scorecard-upload">
                       <input type="file" accept="image/*" onChange={handleFileChange} hidden/>
 
-                      <div     style={{width: "64px", height: "64px", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1.25rem", borderRadius: "1rem", backgroundColor: "rgba(255, 102, 0, 0.08)", color: "#ff6600"}}>
+                      <div style={{width: "64px", height: "64px", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1.25rem", borderRadius: "1rem", backgroundColor: "rgba(255, 102, 0, 0.08)", color: "#ff6600"}}>
                           <BsUpload size={28} />
                       </div>
 

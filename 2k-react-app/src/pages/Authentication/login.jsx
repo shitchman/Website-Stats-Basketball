@@ -14,8 +14,8 @@ function Login({ setCurrentPage }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!username.trim() || !password.trim()) {
-            setShowAlert(true);
-            return;
+        setShowAlert(true);
+        return;
         }
 
         setShowAlert(false);

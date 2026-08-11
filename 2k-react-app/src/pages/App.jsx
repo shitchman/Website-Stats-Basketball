@@ -17,7 +17,7 @@ function App() {
     const [currentPage, setCurrentPage] = useState('home');
 
     const authPages = ['home', 'login', 'register']
-    const dashboardPages = ['addBuild', 'addFriends', 'addGames', 'dashboardHome', 'editProfile', 'friends', 'profile', 'stats']
+    const dashboardPages = ['addGames', 'dashboardHome', 'profile', 'stats', 'addBuild']
 
     const renderPage = () => {
         //Every page that is designed to be able to navigate between within there set code (not the navbar) pages will need the setCurrentPage={setCurrentPage}
