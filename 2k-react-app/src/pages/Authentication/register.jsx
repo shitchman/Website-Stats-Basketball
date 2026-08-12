@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 
 function Register({ setCurrentPage }) {
-    const [gender, setGender] = useState("");
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -15,7 +14,7 @@ function Register({ setCurrentPage }) {
 
    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!gender || !username.trim() || !email.trim() || !password.trim() || password !== confirmPassword) {
+        if (!username.trim() || !email.trim() || !password.trim() || password !== confirmPassword) {
             setShowAlert(true);
             return;
         }
@@ -39,36 +38,6 @@ function Register({ setCurrentPage }) {
                         <Row id="loginAlert" className={"alert alert-danger " + (showAlert ? '' : 'd-none')} role="alert">
                             Please complete all sections of this form.
                         </Row>
-
-                        <Form.Group>
-                            <Form.Check
-                                inline
-                                name="gender"
-                                value="male"
-                                onChange={(e) => setGender(e.target.value)}
-                                type="radio"
-                                label="Male"
-                            />
-
-                            <Form.Check
-                                inline
-                                className=""
-                                name="gender"
-                                value="female"
-                                onChange={(e) => setGender(e.target.value)}
-                                type="radio"
-                                label="Female"
-                            />
-                            <Form.Check
-                                inline
-                                name="gender"
-                                value="other"
-                                onChange={(e) => setGender(e.target.value)}
-                                type="radio"
-                                label="Other"
-                            />
-                        </Form.Group>
-
                         <Form.Group className="mb-3">
                             <Form.Label htmlFor="username" className="d-block text-start mt-2">Username</Form.Label>
                             <Form.Control 

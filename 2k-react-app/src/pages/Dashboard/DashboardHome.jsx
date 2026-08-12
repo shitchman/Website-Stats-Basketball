@@ -120,10 +120,12 @@ function DashboardHome() {
                             <p className="fw-light" style={{ color: "rgba(145, 148, 148, 1.0)"}}>Performance overview </p>
                             <Table className="recent-games-table dashboard-tables" responsive >
                                 <thead>
+                                    <tr>
                                         <th>Name</th>
                                         <th>PPG</th>
                                         <th>Games</th>
                                         <th>W%</th>
+                                    </tr>
                                 </thead>
 
                                 <tbody>
@@ -182,7 +184,7 @@ function DashboardHome() {
             </Row>
 
             {/* Recent Games */}
-            <Col className="rounded w-100 p-3 d-flex justify-content-cente ">
+            <Col className="rounded w-100 p-3 d-flex justify-content-center">
                 <Card className="hero-card w-100 flex-grow-1">
                     <div className="hero-glow hero-glow-bottom-right" aria-hidden="true"></div>
                     <div className="hero-glow hero-glow-top-left" aria-hidden="true"></div>
