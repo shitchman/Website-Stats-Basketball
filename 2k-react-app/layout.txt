@@ -1,0 +1,63 @@
+hoop-stats/
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── ImageCropper.jsx
+│   │   │   ├── Navbar.jsx
+│   │   │   └── ...
+│   │   │
+│   │   ├── pages/
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── AddGame.jsx
+│   │   │   ├── Stats.jsx
+│   │   │   └── Profile.jsx
+│   │   │
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   │
+│   ├── package.json
+│   └── ...
+│
+├── backend/
+│   ├── app/
+│   │   ├── main.py
+│   │   │
+│   │   ├── models/
+│   │   │   ├── user.py
+│   │   │   ├── build.py
+│   │   │   ├── game.py
+│   │   │   ├── player_statline.py
+│   │   │   └── ...
+│   │   │
+│   │   ├── schemas/
+│   │   │   ├── user.py
+│   │   │   ├── build.py
+│   │   │   ├── game.py
+│   │   │   └── ...
+│   │   │
+│   │   ├── routers/
+│   │   │   ├── auth.py
+│   │   │   ├── games.py
+│   │   │   ├── builds.py
+│   │   │   └── uploads.py
+│   │   │
+│   │   ├── services/
+│   │   │   ├── image_processing.py
+│   │   │   ├── ocr.py
+│   │   │   └── ...
+│   │   │
+│   │   ├── database/
+│   │   │   ├── database.py
+│   │   │   └── ...
+│   │   │
+│   │   └── utils/
+│   │
+│   ├── tests/
+│   │
+│   ├── requirements.txt
+│   └── ...
+│
+├── .gitignore
+├── README.md
+└── docker-compose.yml       # eventually
