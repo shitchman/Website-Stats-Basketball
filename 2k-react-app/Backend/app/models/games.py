@@ -1,9 +1,18 @@
+from typing import TYPE_CHECKING
+
 from sqlalchemy import CheckConstraint, Integer, String, DateTime, ForeignKey;
 from sqlalchemy.orm import Mapped, mapped_column, relationship;
 
 from app.database.database import Base
 
 from datetime import datetime;
+
+if TYPE_CHECKING:
+    from app.models.friends import FriendModel
+    from app.models.builds import BuildModel
+    from app.models.playerStatline import PlayerStatline
+    from app.models.userAccount import UserAccountModel
+    from app.models.gameModes import GameModes
 
 
 #Will store information about the games that the user has played, including the build that was used, the game mode, and the date and time of the game
@@ -33,12 +42,12 @@ class Game(Base):
     q4_points_against: Mapped[int] = mapped_column(Integer, nullable=False)
     
 
-    user: Mapped["UserAccountModel"] = relationship(back_populates="games")
+    user_account: Mapped["UserAccountModel"] = relationship(back_populates="games")
     game_mode: Mapped["GameModes"] = relationship(back_populates="games")
     statlines: Mapped[list["PlayerStatline"]] = relationship( back_populates="game", cascade="all, delete-orphan")
-    friend: Mapped["Friend"] = relationship(back_populates="games", foreign_keys=[friend_id])
-    build: Mapped["Builds"] = relationship(back_populates="games", foreign_keys=[build_id])
-    friend_build: Mapped["Builds"] = relationship(back_populates="friend_games", foreign_keys=[friend_build_id])
+    friend: Mapped["FriendModel"] = relationship(back_populates="games", foreign_keys=[friend_id])
+    build: Mapped["BuildModel"] = relationship(back_populates="games", foreign_keys=[build_id])
+    friend_build: Mapped["BuildModel"] = relationship(back_populates="friend_games", foreign_keys=[friend_build_id])
 
     __table_args__ = (
         CheckConstraint(

@@ -1,22 +1,83 @@
 import { useState } from "react";
 import { Container, Row, Card, Button, Form } from "react-bootstrap";
 
-function AddFriend({ onClose }) {
+import { apiFetch } from "../../api.js";
+
+
+function AddFriend({ setFriends, onClose }) {
   const [name, setName] = useState("");
   const [onlineID, setOnlineID] = useState("");
+  
   const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleFriendAddition = async () => {
+    try {
+      const response = await apiFetch('/friends/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json',},
+      body: JSON.stringify({ name: name.trim(), online_ID: onlineID.trim()}),
+    });
+
+    const responseText = await response.text();
+    let data = null;
+
+    if (responseText) {
+      try {
+        data = JSON.parse(responseText);
+      } catch {
+        data = null;
+      }
+    }
+
+    if (!response.ok) {
+      setAlertMessage(data?.detail || `Friend addition failed (${response.status}).`);
+      setShowAlert(true);
+      return;
+    }
+
+    const friendsListResponse = await apiFetch('/friends/me');
+    
+    if (!friendsListResponse.ok) {
+      setAlertMessage('Friend addition succeeded, but the friends list could not be reloaded.');
+      setShowAlert(true);
+      return;
+    }
+    
+    setFriends(await friendsListResponse.json());
+    console.log("Friend added successfully:", responseText);
+    onClose();
+
+  } catch (error) {
+    console.error('Error adding friend:', error);
+    setAlertMessage('Unable to connect to the server. Please try again later.');
+    setShowAlert(true);
+    
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) {
+      return;
+    }
+
     if (!name.trim() || !onlineID.trim()) {
+      setAlertMessage('Please enter both your name and online ID.');
       setShowAlert(true);
       return;
     }
 
     setShowAlert(false);
+    setAlertMessage('');
+    setIsSubmitting(true);
 
-    onClose();
-  }
+    await handleFriendAddition();
+  };
 
   return (
     <Container>
@@ -44,7 +105,7 @@ function AddFriend({ onClose }) {
 
             <Form id="AddFriend" method="post" onSubmit={handleSubmit}>
               <Row id="submissionAlert" className={"alert alert-danger " + (showAlert ? '' : 'd-none')} role="alert">
-                Please ensure all sections are correctly filled out.
+                {alertMessage}
               </Row>
 
               <Row className="mb-3">
@@ -83,7 +144,9 @@ function AddFriend({ onClose }) {
                 />
               </Row>
 
-              <Button type="submit" className="btn btn-primary" style={{ backgroundColor: "rgba(255, 102, 0, 0.95)", borderColor: "rgba(255, 102, 0, 0.95)" }} id="confirmFriendButton">Add Friend</Button>
+              <Button type="submit" className="btn btn-primary" style={{ backgroundColor: "rgba(255, 102, 0, 0.95)", borderColor: "rgba(255, 102, 0, 0.95)" }} id="confirmFriendButton" disabled={isSubmitting}>
+                {isSubmitting ? 'Adding friend...' : 'Add Friend'}
+              </Button>
             </Form>
           </Card.Body>
         </Card>

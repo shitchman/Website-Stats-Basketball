@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Button, Col, Container, Form, Row, Modal } from "react-bootstrap";
-import RegistrationSuccess from "../Modals/registrationSuccess";
+import RegistrationSuccess from "../Modals/RegistrationSuccess.jsx";
 
 function Register({ setCurrentPage }) {
     const [username, setUsername] = useState("");
-    const [onlineID, setOnlineID] = useState(""); 
+    const [onlineID, setOnlineID] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -16,12 +16,12 @@ function Register({ setCurrentPage }) {
         setShowModal(false);
         setCurrentPage('login');
     };
-    
-    useEffect(() => {
-                    document.title = "Hoop Stats - Register";
-                }, []);
 
-   const handleSubmit = async (e) => {
+    useEffect(() => {
+        document.title = "Hoop Stats - Register";
+    }, []);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!username.trim() || !onlineID.trim() || !email.trim() || !password.trim() || password !== confirmPassword) {
             setShowAlert(true);
@@ -32,8 +32,8 @@ function Register({ setCurrentPage }) {
 
         const response = await fetch('http://localhost:8000/userAccount/', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json',},
-            body: JSON.stringify({ username: username.trim(), password: password.trim(), email: email.trim(), online_ID: onlineID.trim()}),
+            headers: { 'Content-Type': 'application/json', },
+            body: JSON.stringify({ username: username.trim(), password: password.trim(), email: email.trim(), online_ID: onlineID.trim() }),
         });
 
         const data = await response.json();
@@ -59,63 +59,63 @@ function Register({ setCurrentPage }) {
                         </Row>
                         <Form.Group className="mb-3">
                             <Form.Label htmlFor="username" className="d-block text-start mt-2">Username</Form.Label>
-                            <Form.Control 
-                                className="bg-dark text-white border-secondary" 
+                            <Form.Control
+                                className="bg-dark text-white border-secondary"
                                 value={username}
-                                onChange={(e) => setUsername(e.target.value)} 
-                                type="text" 
-                                id="username" 
-                                required 
+                                onChange={(e) => setUsername(e.target.value)}
+                                type="text"
+                                id="username"
+                                required
                             />
                         </Form.Group>
 
                         <Form.Group className="mb-3">
                             <Form.Label htmlFor="onlineID" className="d-block text-start mt-2">Online ID</Form.Label>
-                            <Form.Control 
-                                className="bg-dark text-white border-secondary" 
+                            <Form.Control
+                                className="bg-dark text-white border-secondary"
                                 value={onlineID}
-                                onChange={(e) => setOnlineID(e.target.value)} 
-                                type="text" 
-                                id="onlineID" 
-                                required 
+                                onChange={(e) => setOnlineID(e.target.value)}
+                                type="text"
+                                id="onlineID"
+                                required
                             />
                         </Form.Group>
 
                         <Form.Group className="mb-3">
                             <Form.Label htmlFor="email" className="d-block text-start">Email</Form.Label>
-                            <Form.Control 
-                                className="bg-dark text-white border-secondary" 
+                            <Form.Control
+                                className="bg-dark text-white border-secondary"
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value)} 
-                                type="email" 
-                                id="email" 
-                                required 
+                                onChange={(e) => setEmail(e.target.value)}
+                                type="email"
+                                id="email"
+                                required
                             />
                         </Form.Group>
 
                         <Form.Group className="mb-3">
                             <Form.Label htmlFor="password" className="d-block text-start">Password</Form.Label>
-                            <Form.Control 
-                                className="bg-dark text-white border-secondary" 
+                            <Form.Control
+                                className="bg-dark text-white border-secondary"
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}                                
-                                type="password" 
-                                id="password" 
-                                maxLength={12} 
-                                required 
+                                onChange={(e) => setPassword(e.target.value)}
+                                type="password"
+                                id="password"
+                                maxLength={12}
+                                required
                             />
                         </Form.Group>
 
                         <Form.Group className="mb-3">
                             <Form.Label htmlFor="confirm_password" className="d-block text-start">Confirm Password</Form.Label>
-                            <Form.Control 
+                            <Form.Control
                                 className="bg-dark text-white border-secondary"
                                 value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)} 
-                                type="password" 
-                                id="confirm_password" 
-                                maxLength="12" 
-                                required 
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                type="password"
+                                id="confirm_password"
+                                maxLength="12"
+                                required
                             />
                         </Form.Group>
 
@@ -125,9 +125,9 @@ function Register({ setCurrentPage }) {
                 </Col>
             </Row>
 
-            <Modal show={showModal} onHide={handleRegistrationSuccessClose} centered size="lg"  >
+            <Modal show={showModal} onHide={handleRegistrationSuccessClose} centered size="lg">
                 <Modal.Body className="boomers-hero-overlay d-flex">
-                    {<RegistrationSuccess onClose={handleRegistrationSuccessClose}/>}
+                    {<RegistrationSuccess onClose={handleRegistrationSuccessClose} />}
                 </Modal.Body>
             </Modal>
         </Container>

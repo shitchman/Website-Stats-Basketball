@@ -2,37 +2,47 @@ import { useEffect, useState } from "react";
 import { Container, Row, Col, Card, Table, Button, Modal } from "react-bootstrap";
 import { BsPencilFill, BsPlusCircleFill, BsPersonPlusFill } from "react-icons/bs";
 
+import { apiFetch } from "../../api.js";
+
 import AddBuild from "../Modals/AddBuild";
 import AddFriend from "../Modals/AddFriend";
 import EditProfile from "../Modals/EditProfile";
+import EditProfileAccess from "../Modals/EditProfileAccess";
 
-function Profile() {
+function Profile({ user, setUser }) {
 
     const [activeModal, setActiveModal] = useState(null);
+    const [friends, setFriends] = useState([]);
+    const [builds, setBuilds] = useState([]);
 
-
+    // Sets the document title
     useEffect(() => {
         document.title = "Hoop Stats - Profile";
     }, []);
 
-    const builds = [
-        { id: 1, name: "build1", position: "C" },
-        { id: 2, name: "build2", position: "PG" },
-        { id: 3, name: "build3", position: "PF" },
-        { id: 4, name: "build4", position: "SG" },
-        { id: 5, name: "build5", position: "SF" },
-        { id: 6, name: "build6", position: "C" },
-        { id: 7, name: "build7", position: "PF" },
-        { id: 8, name: "build8", position: "SG" }
-    ];
+    // Loads the users friends/teammates
+    useEffect(() => {
+        const loadFriends = async () => {
+            const response = await apiFetch('/friends/me');
+            if (response.ok) {
+                setFriends(await response.json());
+            }
+        };
 
-    const friends = [
-        { id: 1, name: "friend1", onlineID: "onlineID", builds: 6 },
-        { id: 2, name: "friend2", onlineID: "onlineID", builds: 3 },
-        { id: 3, name: "friend3", onlineID: "onlineID", builds: 4 },
-        { id: 4, name: "friend4", onlineID: "onlineID", builds: 2 },
-        { id: 5, name: "friend5", onlineID: "onlineID", builds: 1 }
-    ];
+        loadFriends();
+    }, []);
+
+    //Loads the users builds
+    useEffect(() => {
+        const loadBuilds = async () => {
+            const response = await apiFetch('/builds/me');
+            if (response.ok) {
+                setBuilds(await response.json());
+            }
+        };
+
+        loadBuilds();
+    }, [])
 
     return (
         <Container fluid className="mt-3">
@@ -53,7 +63,7 @@ function Profile() {
 
                                 <Col xs={2} className="large-profile-header-custom-col">
                                     <Row className="justify-content-end align-items-start g-0">
-                                        <Button variant="link" className="text-decoration-none p-0 w-auto" onClick={() => setActiveModal("editProfile")}>
+                                        <Button variant="link" className="text-decoration-none p-0 w-auto" onClick={() => setActiveModal("editProfileAccess")}>
                                             <span className="fw-light" style={{ color: "rgba(145, 148, 148, 1.0)" }}>Edit Profile</span>
                                         </Button>
                                     </Row>
@@ -101,10 +111,10 @@ function Profile() {
                                 </thead>
 
                                 <tbody>
-                                    {builds.map((stat, index) => (
-                                        <tr key={stat.id || index}>
-                                            <td className="w-75">{stat.name}</td>
-                                            <td className="w-25">{stat.position}</td>
+                                    {builds.map((build, index) => (
+                                        <tr key={build.id || index}>
+                                            <td className="w-75">{build.build_name}</td>
+                                            <td className="w-25">{build.preferred_position}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -155,11 +165,11 @@ function Profile() {
                                 </thead>
 
                                 <tbody>
-                                    {friends.map((stat, index) => (
-                                        <tr key={stat.id || index}>
-                                            <td>{stat.name}</td>
-                                            <td>{stat.onlineID}</td>
-                                            <td>{stat.builds}</td>
+                                    {friends.map((friend, index) => (
+                                        <tr key={friend.id || index}>
+                                            <td>{friend.name}</td>
+                                            <td>{friend.online_ID}</td>
+                                            <td>{friend.builds ?? 0}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -171,9 +181,10 @@ function Profile() {
             {/* 'Popouts' from the proflile page*/}
             <Modal show={activeModal !== null} onHide={() => setActiveModal(null)} centered size="lg" >
                 <Modal.Body className="boomers-hero-overlay d-flex">
-                    {activeModal === "addFriend" && <AddFriend onClose={() => setActiveModal(null)} />}
-                    {activeModal === "addBuild" && <AddBuild onClose={() => setActiveModal(null)} />}
-                    {activeModal === "editProfile" && <EditProfile onClose={() => setActiveModal(null)} />}
+                    {activeModal === "addFriend" && <AddFriend setFriends={setFriends} onClose={() => setActiveModal(null)} />}
+                    {activeModal === "addBuild" && <AddBuild setBuilds={setBuilds} onClose={() => setActiveModal(null)} />}
+                    {activeModal === "editProfileAccess" && <EditProfileAccess user={user} onVerified={() => setActiveModal("editProfile")} />}
+                    {activeModal === "editProfile" && <EditProfile user={user} setUser={setUser} onClose={() => setActiveModal(null)} />}
                 </Modal.Body>
             </Modal>
         </Container>

@@ -1,0 +1,16 @@
+from pydantic import BaseModel, ConfigDict
+
+
+class FriendCreate(BaseModel):
+    name: str
+    online_ID: str
+
+class FriendOut(BaseModel):
+    model_config = ConfigDict(
+        from_attributes=True #This allows the model to be created from an ORM object, which is useful when returning data from the database
+        ) 
+
+    id: int
+    user_id: int
+    name: str
+    online_ID: str

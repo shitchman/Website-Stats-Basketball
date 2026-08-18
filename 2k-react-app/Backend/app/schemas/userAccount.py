@@ -25,6 +25,17 @@ class LoginRequest(BaseModel):
     password: str
 
 
+class PasswordConfirmRequest(BaseModel):
+    password: str
+
+
+class UserAccountUpdate(BaseModel):
+    username: str | None = None
+    email: EmailStr | None = None
+    online_ID: str | None = None
+    password: str | None = None
+
+
 class LoginResponse(BaseModel):
     access_token: str
     token_type: str

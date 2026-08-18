@@ -1,7 +1,14 @@
+from typing import TYPE_CHECKING
+
 from sqlalchemy.orm import Mapped, mapped_column, relationship;
 from sqlalchemy import Integer, String, ForeignKey, CheckConstraint;
 
 from app.database.database import Base;
+
+if TYPE_CHECKING:
+    from app.models.friends import FriendModel
+    from app.models.builds import BuildModel
+    from app.models.games import Game
 
 #Defines what will be stored for each relevant player from each game
 class PlayerStatline(Base):
@@ -31,9 +38,9 @@ class PlayerStatline(Base):
     opponent: Mapped[str] = mapped_column(String(50), nullable=True) #Might be used
 
     game: Mapped["Game"] = relationship(back_populates="statlines")
-    builds: Mapped["Builds"] = relationship(back_populates="statlines", foreign_keys=[build_id])
-    friend_build: Mapped["Builds"] = relationship(back_populates="friend_statlines", foreign_keys=[friend_build_id])
-    friend: Mapped["Friend"] = relationship(back_populates="statlines", foreign_keys=[friend_id])
+    builds: Mapped["BuildModel"] = relationship(back_populates="statlines", foreign_keys=[build_id])
+    friend_build: Mapped["BuildModel"] = relationship(back_populates="friend_statlines", foreign_keys=[friend_build_id])
+    friend: Mapped["FriendModel"] = relationship(back_populates="statlines", foreign_keys=[friend_id])
 
     __table_args__ = (
         CheckConstraint(

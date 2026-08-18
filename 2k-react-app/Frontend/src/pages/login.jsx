@@ -2,17 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { apiFetch } from "../../api.js";
 
-function Login({ setCurrentPage}) {
+function Login({ setCurrentPage, setUser }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    
     const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
-    
+
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
-            document.title = "Hoop Stats - Login";
-        }, []);
+        document.title = "Hoop Stats - Login";
+    }, []);
 
 
     const getErrorMessage = (data, fallbackMessage) => {
@@ -50,9 +51,18 @@ function Login({ setCurrentPage}) {
                 setAlertMessage(getErrorMessage(data, `Login failed (${response.status}).`));
                 setShowAlert(true);
                 return;
-            }          
+            }
+
+            const currentUserResponse = await apiFetch('/userAccount/me');
+            if (!currentUserResponse.ok) {
+                setAlertMessage('Login succeeded, but the current user could not be loaded.');
+                setShowAlert(true);
+                return;
+            }
+
+            setUser(await currentUserResponse.json());
             setCurrentPage('dashboardHome');
-             
+
         } catch (error) {
             console.error('Error during login:', error);
             setAlertMessage('Unable to connect to the server. Please try again.');
@@ -69,9 +79,9 @@ function Login({ setCurrentPage}) {
         }
 
         if (!username.trim() || !password.trim()) {
-        setAlertMessage('Please enter both your username and password.');
-        setShowAlert(true);
-        return;
+            setAlertMessage('Please enter both your username and password.');
+            setShowAlert(true);
+            return;
         }
 
         setShowAlert(false);
@@ -81,9 +91,9 @@ function Login({ setCurrentPage}) {
         await handleLogin();
     };
 
-    return (    
+    return (
         <Container>
-            <Row>                
+            <Row>
                 <Col className="auth-content ms-5 mt-5" style={{ flex: '0 0 390px', maxWidth: '100%', width: '390px' }}>
                     <h1>Login</h1>
                     <Form id="LoginForm" method="post" onSubmit={handleSubmit}>

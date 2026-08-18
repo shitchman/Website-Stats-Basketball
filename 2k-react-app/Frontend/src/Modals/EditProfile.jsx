@@ -1,30 +1,67 @@
 import { useState } from "react";
 import { Container, Row, Card, Button, Form, Col } from "react-bootstrap";
 
+import { apiFetch } from "../../api.js";
 
-
-// Need to make the user confirm their password before entering the edit profile page.
 // Then need to have the users profile pre saved, this is so the user only has to change what they want and not everything.
 
-function EditProfile({ onClose }) {
-  const [userName, setUserName] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [userOnlineID, setUserOnlineID] = useState("");
+function EditProfile({ user, setUser, onClose }) {
+  const [userName, setUserName] = useState(user?.username ?? "");
+  const [userEmail, setUserEmail] = useState(user?.email ?? "");
+  const [userOnlineID, setUserOnlineID] = useState(user?.online_ID ?? "");
   const [userPassword, setUserPassword] = useState("");
   const [userConfirmPassword, setUserConfirmPassword] = useState("");
+
   const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!userName.trim() || !userEmail.trim() || !userOnlineID.trim() || !userPassword.trim() || userPassword !== userConfirmPassword) {
+
+    if (!userName.trim() || !userEmail.trim() || !userOnlineID.trim() || userPassword !== userConfirmPassword) {
+      setAlertMessage('Please complete the form correctly. Passwords must match.');
       setShowAlert(true);
       return;
     }
 
     setShowAlert(false);
+    setAlertMessage('');
+    setIsSubmitting(true);
 
-    onClose();
-  }
+    try {
+      const response = await apiFetch('/userAccount/me', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: userName.trim(),
+          email: userEmail.trim(),
+          online_ID: userOnlineID.trim(),
+          ...(userPassword.trim() ? { password: userPassword.trim() } : {}),
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        setAlertMessage(data?.detail || `Profile update failed (${response.status}).`);
+        setShowAlert(true);
+        return;
+      }
+
+      setUser(await response.json());
+      onClose();
+
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      setAlertMessage('Unable to connect to the server. Please try again later.');
+      setShowAlert(true);
+
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
 
 
   return (
@@ -53,7 +90,7 @@ function EditProfile({ onClose }) {
 
             <Form id="editProfile" method="post" onSubmit={handleSubmit}>
               <Row id="loginAlert" className={"alert alert-danger " + (showAlert ? '' : 'd-none')} role="alert">
-                Please successfully complete all sections of this form.
+                {alertMessage}
               </Row>
               {/* Username */}
               <Form.Group className="mb-3">
@@ -93,7 +130,7 @@ function EditProfile({ onClose }) {
               </Form.Group>
               {/* Password */}
               <Form.Group className="mb-3">
-                <Form.Label htmlFor="userPassword" className="d-block text-start">Password</Form.Label>
+                <Form.Label htmlFor="userPassword" className="d-block text-start">New Password (leave blank to keep current)</Form.Label>
                 <Form.Control
                   className="bg-dark text-white border-secondary"
                   value={userPassword}
@@ -101,12 +138,11 @@ function EditProfile({ onClose }) {
                   type="password"
                   id="userPassword"
                   maxLength={12}
-                  required
                 />
               </Form.Group>
               {/* Confirm Password */}
               <Form.Group className="mb-3">
-                <Form.Label htmlFor="userConfirmPassword" className="d-block text-start">Confirm Password</Form.Label>
+                <Form.Label htmlFor="userConfirmPassword" className="d-block text-start">Confirm New Password</Form.Label>
                 <Form.Control
                   className="bg-dark text-white border-secondary"
                   value={userConfirmPassword}
@@ -114,12 +150,12 @@ function EditProfile({ onClose }) {
                   type="password"
                   id="userConfirmPassword"
                   maxLength="12"
-                  required
                 />
               </Form.Group>
 
-              <Button type="submit" variant="primary" id="registerButton">Save</Button>
-
+              <Button type="submit" variant="primary" id="registerButton" disabled={isSubmitting}>
+                {isSubmitting ? 'Saving...' : 'Save'}
+              </Button>
             </Form>
           </Card.Body>
         </Card>

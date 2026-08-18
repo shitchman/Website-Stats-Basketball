@@ -1,9 +1,9 @@
 import BaseAuthentication from './components/AuthenticationNavbar.jsx';
 import BaseDashboard from './components/DashboardNavbar.jsx';
 
-import Home from './pages/home.jsx';
-import Login from './pages/login.jsx';
-import Register from './pages/register.jsx';
+import Home from './pages/Home.jsx';
+import Login from './pages/Login.jsx';
+import Register from './pages/Register.jsx';
 
 import DashboardHome from './pages/DashboardHome.jsx';
 import AddGames from './pages/AddGames.jsx';
@@ -27,18 +27,18 @@ function App() {
             case 'home':
                 return (<Home setCurrentPage={setCurrentPage} />);
             case 'login':
-                return (<Login setCurrentPage={setCurrentPage} />);
+                return (<Login setCurrentPage={setCurrentPage} setUser={setUser} />);
             case 'register':
                 return (<Register setCurrentPage={setCurrentPage} />);
 
             case 'dashboardHome':
-                return (<DashboardHome setCurrentPage={setCurrentPage} />);
+                return (<DashboardHome user={user} />);
             case 'addGames':
-                return (<AddGames setCurrentPage={setCurrentPage} />);
+                return (<AddGames />);
             case 'stats':
-                return (<Stats setCurrentPage={setCurrentPage} />);
+                return (<Stats />);
             case 'profile':
-                return (<Profile setCurrentPage={setCurrentPage} />);
+                return (<Profile user={user} setUser={setUser} />);
 
             default:
                 return (<Home />);

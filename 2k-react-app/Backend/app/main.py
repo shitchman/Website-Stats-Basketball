@@ -5,7 +5,7 @@ from typing import Annotated;
 import os;
 from sqlalchemy.orm import Session;
 
-from app.routers import userAccount as userAccount_router, auth as auth_router;
+from app.routers import userAccount as userAccount_router, auth as auth_router, friends as friends_router, builds as builds_router;
 from app.database.database import Base, get_db, engine;
 
 # Imports every model module so all tables/relationships are registered on Base before create_all/mapper configuration
@@ -45,6 +45,16 @@ app.include_router(
 app.include_router(
     auth_router.router,
     prefix='/auth',
+)
+
+app.include_router(
+    friends_router.router,
+    prefix='/friends',
+)
+
+app.include_router(
+    builds_router.router,
+    prefix='/builds',
 )
 
 
