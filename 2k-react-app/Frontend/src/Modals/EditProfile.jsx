@@ -3,14 +3,13 @@ import { Container, Row, Card, Button, Form, Col } from "react-bootstrap";
 
 import { apiFetch } from "../../api.js";
 
-// Then need to have the users profile pre saved, this is so the user only has to change what they want and not everything.
 
 function EditProfile({ user, setUser, onClose }) {
-  const [userName, setUserName] = useState(user?.username ?? "");
-  const [userEmail, setUserEmail] = useState(user?.email ?? "");
-  const [userOnlineID, setUserOnlineID] = useState(user?.online_ID ?? "");
-  const [userPassword, setUserPassword] = useState("");
-  const [userConfirmPassword, setUserConfirmPassword] = useState("");
+  const [userName, setUserName] = useState(user?.username ?? '');
+  const [userEmail, setUserEmail] = useState(user?.email ?? '');
+  const [userOnlineID, setUserOnlineID] = useState(user?.online_ID ?? '');
+  const [userPassword, setUserPassword] = useState('');
+  const [userConfirmPassword, setUserConfirmPassword] = useState('');
 
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
@@ -82,7 +81,7 @@ function EditProfile({ user, setUser, onClose }) {
 
       {/* Form */}
       <Col>
-        <Card className="hero-card overflow-y-auto"> {/* overflow-y-auto adds a vertical scroll */}
+        <Card className="hero-card overflow-y-auto">
           <div className="hero-glow hero-glow-bottom-right" aria-hidden="true"></div>
           <div className="hero-glow hero-glow-top-left" aria-hidden="true"></div>
 

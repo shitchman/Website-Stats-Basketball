@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { apiFetch } from "../../api.js";
 
-function EditProfileAccess({ user, onClose, onVerified }) {
+function AccessAuthorisation({ user, onClose, onVerified }) {
     const [userConfirmPassword, setUserConfirmPassword] = useState("");
 
     const [showAlert, setShowAlert] = useState(false);
@@ -84,4 +84,4 @@ function EditProfileAccess({ user, onClose, onVerified }) {
     );
 }
 
-export default EditProfileAccess;
+export default AccessAuthorisation;

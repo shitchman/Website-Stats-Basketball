@@ -15,8 +15,9 @@ class UserBuildOut(BaseModel):
     build_name: str
     preferred_position: str
 
-
 class FriendBuildOut(BaseModel):
+
+
     model_config = ConfigDict(
         from_attributes=True #This allows the model to be created from an ORM object, which is useful when returning data from the database
         ) 
@@ -25,3 +26,8 @@ class FriendBuildOut(BaseModel):
     friend_id: int
     build_name: str
     preferred_position: str
+
+class BuildUpdate(BaseModel):
+    build_name: str | None = None
+    preferred_position: str | None = None
+

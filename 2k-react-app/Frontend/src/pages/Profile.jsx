@@ -5,9 +5,10 @@ import { BsPencilFill, BsPlusCircleFill, BsPersonPlusFill } from "react-icons/bs
 import { apiFetch } from "../../api.js";
 
 import AddBuild from "../Modals/AddBuild";
+import EditBuild from "../Modals/EditBuild";
 import AddFriend from "../Modals/AddFriend";
 import EditProfile from "../Modals/EditProfile";
-import EditProfileAccess from "../Modals/EditProfileAccess";
+import AccessAuthorisation from "../Modals/AccessAuthorisation.jsx";
 
 function Profile({ user, setUser }) {
 
@@ -56,14 +57,14 @@ function Profile({ user, setUser }) {
                         <Card.Body className="hero-content text-white">
                             <Row>
                                 <Col xs={10} className="large-profile-header-custom-col">
-                                    <h1 style={{ color: "rgba(255, 102, 0, 0.95)" }}>Username</h1>
+                                    <h1 style={{ color: "rgba(255, 102, 0, 0.95)" }}>{user?.username ?? "Loading..."}</h1>
 
                                     <p className="fw-light" style={{ color: "rgba(145, 148, 148, 1.0)" }}>Joined: 01 - 02 - 26</p>
                                 </Col>
 
                                 <Col xs={2} className="large-profile-header-custom-col">
                                     <Row className="justify-content-end align-items-start g-0">
-                                        <Button variant="link" className="text-decoration-none p-0 w-auto" onClick={() => setActiveModal("editProfileAccess")}>
+                                        <Button variant="link" className="text-decoration-none p-0 w-auto" onClick={() => setActiveModal("accessAuthorisationEditProfile")}>
                                             <span className="fw-light" style={{ color: "rgba(145, 148, 148, 1.0)" }}>Edit Profile</span>
                                         </Button>
                                     </Row>
@@ -89,7 +90,7 @@ function Profile({ user, setUser }) {
 
                                 <Col xs={3} className="d-flex small-profile-custom-col">
                                     <Button variant="link" className="text-decoration-none d-flex align-items-center gap-2">
-                                        <span className="fw-semibold" style={{ color: "rgba(145, 148, 148, 1.0)" }}>Edit </span>
+                                        <span className="fw-semibold" style={{ color: "rgba(145, 148, 148, 1.0)" }} onClick={() => setActiveModal("accessAuthorisationEditBuild")}>Edit </span>
                                         <BsPencilFill size={20} style={{ color: "rgba(255, 102, 0, 0.95)" }} />
                                     </Button>
                                 </Col>
@@ -136,7 +137,7 @@ function Profile({ user, setUser }) {
 
                                 <Col xs={3} className="d-flex small-profile-custom-col">
                                     <Button variant="link" className="text-decoration-none d-flex align-items-center gap-2">
-                                        <span className="fw-semibold" style={{ color: "rgba(145, 148, 148, 1.0)" }}>Edit </span>
+                                        <span className="fw-semibold" style={{ color: "rgba(145, 148, 148, 1.0)" }} onClick={() => setActiveModal("accessAuthorisationEditFriend")}>Edit </span>
                                         <BsPencilFill size={20} style={{ color: "rgba(255, 102, 0, 0.95)" }} />
                                     </Button>
                                 </Col>
@@ -181,10 +182,18 @@ function Profile({ user, setUser }) {
             {/* 'Popouts' from the proflile page*/}
             <Modal show={activeModal !== null} onHide={() => setActiveModal(null)} centered size="lg" >
                 <Modal.Body className="boomers-hero-overlay d-flex">
+
                     {activeModal === "addFriend" && <AddFriend setFriends={setFriends} onClose={() => setActiveModal(null)} />}
+                    {activeModal === "accessAuthorisationEditFriend" && <AccessAuthorisation user={user} onVerified={() => setActiveModal("editProfile")} />}
+                    
                     {activeModal === "addBuild" && <AddBuild setBuilds={setBuilds} onClose={() => setActiveModal(null)} />}
-                    {activeModal === "editProfileAccess" && <EditProfileAccess user={user} onVerified={() => setActiveModal("editProfile")} />}
+                    {activeModal === "accessAuthorisationEditBuild" && <AccessAuthorisation user={user} onVerified={() => setActiveModal("editBuild")} />}
+                    {activeModal === "editBuild" && <EditBuild setBuilds={setBuilds} onClose={() => setActiveModal(null)} />}
+
+                    {activeModal === "accessAuthorisationEditProfile" && <AccessAuthorisation user={user} onVerified={() => setActiveModal("editProfile")} />}
                     {activeModal === "editProfile" && <EditProfile user={user} setUser={setUser} onClose={() => setActiveModal(null)} />}
+                    
+                    
                 </Modal.Body>
             </Modal>
         </Container>
