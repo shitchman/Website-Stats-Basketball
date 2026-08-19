@@ -43,8 +43,6 @@ function Register({ setCurrentPage }) {
             console.error('FastAPI error:', data);
             return;
         }
-
-        console.log("User registered successfully:", data);
         setShowModal(true);
     };
 

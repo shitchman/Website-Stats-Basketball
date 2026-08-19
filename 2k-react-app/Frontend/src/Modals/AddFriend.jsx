@@ -15,10 +15,12 @@ function AddFriend({ setFriends, onClose }) {
 
   const handleFriendAddition = async () => {
     try {
-      const response = await apiFetch('/friends/', {
+      const response = await apiFetch('/friends/addNewFriend', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json',},
-      body: JSON.stringify({ name: name.trim(), online_ID: onlineID.trim()}),
+      body: JSON.stringify({ 
+         name: name.trim(), 
+         online_ID: onlineID.trim()}),
     });
 
     const responseText = await response.text();
@@ -38,7 +40,7 @@ function AddFriend({ setFriends, onClose }) {
       return;
     }
 
-    const friendsListResponse = await apiFetch('/friends/me');
+    const friendsListResponse = await apiFetch('/friends/myFriends');
     
     if (!friendsListResponse.ok) {
       setAlertMessage('Friend addition succeeded, but the friends list could not be reloaded.');
@@ -47,11 +49,9 @@ function AddFriend({ setFriends, onClose }) {
     }
     
     setFriends(await friendsListResponse.json());
-    console.log("Friend added successfully:", responseText);
     onClose();
 
   } catch (error) {
-    console.error('Error adding friend:', error);
     setAlertMessage('Unable to connect to the server. Please try again later.');
     setShowAlert(true);
     
@@ -90,7 +90,7 @@ function AddFriend({ setFriends, onClose }) {
           <Card.Body className="hero-content text-white">
             <h1 className="justify-content-center" style={{ color: "rgba(255, 102, 0, 0.95)" }}>ADD FRIEND</h1>
 
-            <p className="fw-light">Please ensure that you fill out each of the fields below</p>
+            <p className="fw-light">Please ensure that you fill out each of the fields below <br></br>Once completed, you can add your friends builds through the edit friends section.</p>
           </Card.Body>
         </Card>
       </Row>

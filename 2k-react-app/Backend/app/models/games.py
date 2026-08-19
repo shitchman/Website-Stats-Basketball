@@ -20,7 +20,7 @@ class Game(Base):
     __tablename__ = 'games'
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True, nullable=False)
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('user_account.id', ondelete='CASCADE'), nullable=False)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('user_account.id', ondelete='CASCADE'), nullable=True)
     game_mode_id: Mapped[int] = mapped_column(Integer, ForeignKey('game_modes.id', ondelete='CASCADE'), nullable=False)
     build_id: Mapped[int] = mapped_column(Integer, ForeignKey('builds.id', ondelete='CASCADE'), nullable=True)
     friend_id: Mapped[int] = mapped_column(Integer, ForeignKey('friends.id', ondelete='CASCADE'), nullable=True)
@@ -52,9 +52,12 @@ class Game(Base):
     __table_args__ = (
         CheckConstraint(
             """
-            (user_id IS NOT NULL AND game_mode_id IS NOT NULL AND build_id IS NOT NULL AND friend_id IS NOT NULL AND friend_build_id IS NOT NULL AND date_time IS NOT NULL AND result IS NOT NULL AND points_for IS NOT NULL AND q1_points_for IS NOT NULL AND q2_points_for IS NOT NULL AND q3_points_for IS NOT NULL AND q4_points_for IS NOT NULL AND points_against IS NOT NULL AND q1_points_against IS NOT NULL AND q2_points_against IS NOT NULL AND q3_points_against IS NOT NULL AND q4_points_against IS NOT NULL)
+            (game_mode_id IS NOT NULL AND user_id IS NOT NULL AND build_id IS NOT NULL AND date_time IS NOT NULL AND result IS NOT NULL AND points_for IS NOT NULL AND q1_points_for IS NOT NULL AND q2_points_for IS NOT NULL AND q3_points_for IS NOT NULL AND q4_points_for IS NOT NULL AND points_against IS NOT NULL AND q1_points_against IS NOT NULL AND q2_points_against IS NOT NULL AND q3_points_against IS NOT NULL AND q4_points_against IS NOT NULL)
+
+            OR
+
+            (game_mode_id IS NOT NULL AND friend_id IS NOT NULL AND friend_build_id IS NOT NULL AND date_time IS NOT NULL AND result IS NOT NULL AND points_for IS NOT NULL AND q1_points_for IS NOT NULL AND q2_points_for IS NOT NULL AND q3_points_for IS NOT NULL AND q4_points_for IS NOT NULL AND points_against IS NOT NULL AND q1_points_against IS NOT NULL AND q2_points_against IS NOT NULL AND q3_points_against IS NOT NULL AND q4_points_against IS NOT NULL)
             """,
             name="game_info_check"
         ),
     )
-

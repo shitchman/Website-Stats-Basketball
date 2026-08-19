@@ -8,13 +8,14 @@ import AddBuild from "../Modals/AddBuild";
 import EditBuild from "../Modals/EditBuild";
 import AddFriend from "../Modals/AddFriend";
 import EditProfile from "../Modals/EditProfile";
+import EditFriend from "../Modals/EditFriend";
 import AccessAuthorisation from "../Modals/AccessAuthorisation.jsx";
 
 function Profile({ user, setUser }) {
 
     const [activeModal, setActiveModal] = useState(null);
-    const [friends, setFriends] = useState([]);
-    const [builds, setBuilds] = useState([]);
+    const [friends, setFriendsList] = useState([]);
+    const [builds, setBuildsList] = useState([]);
 
     // Sets the document title
     useEffect(() => {
@@ -24,9 +25,9 @@ function Profile({ user, setUser }) {
     // Loads the users friends/teammates
     useEffect(() => {
         const loadFriends = async () => {
-            const response = await apiFetch('/friends/me');
+            const response = await apiFetch('/friends/myFriends');
             if (response.ok) {
-                setFriends(await response.json());
+                setFriendsList(await response.json());
             }
         };
 
@@ -36,9 +37,9 @@ function Profile({ user, setUser }) {
     //Loads the users builds
     useEffect(() => {
         const loadBuilds = async () => {
-            const response = await apiFetch('/builds/me');
+            const response = await apiFetch('/builds/myBuilds');
             if (response.ok) {
-                setBuilds(await response.json());
+                setBuildsList(await response.json());
             }
         };
 
@@ -170,7 +171,7 @@ function Profile({ user, setUser }) {
                                         <tr key={friend.id || index}>
                                             <td>{friend.name}</td>
                                             <td>{friend.online_ID}</td>
-                                            <td>{friend.builds ?? 0}</td>
+                                            <td>{friend.friendBuildCount}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -183,12 +184,13 @@ function Profile({ user, setUser }) {
             <Modal show={activeModal !== null} onHide={() => setActiveModal(null)} centered size="lg" >
                 <Modal.Body className="boomers-hero-overlay d-flex">
 
-                    {activeModal === "addFriend" && <AddFriend setFriends={setFriends} onClose={() => setActiveModal(null)} />}
-                    {activeModal === "accessAuthorisationEditFriend" && <AccessAuthorisation user={user} onVerified={() => setActiveModal("editProfile")} />}
-                    
-                    {activeModal === "addBuild" && <AddBuild setBuilds={setBuilds} onClose={() => setActiveModal(null)} />}
+                    {activeModal === "addFriend" && <AddFriend setFriends={setFriendsList} onClose={() => setActiveModal(null)} />}
+                    {activeModal === "accessAuthorisationEditFriend" && <AccessAuthorisation user={user} onVerified={() => setActiveModal("editFriend")} />}
+                    {activeModal === "editFriend" && <EditFriend setFriends={setFriendsList} onClose={() => setActiveModal(null)} />}
+                   
+                    {activeModal === "addBuild" && <AddBuild setBuilds={setBuildsList} onClose={() => setActiveModal(null)} />}
                     {activeModal === "accessAuthorisationEditBuild" && <AccessAuthorisation user={user} onVerified={() => setActiveModal("editBuild")} />}
-                    {activeModal === "editBuild" && <EditBuild setBuilds={setBuilds} onClose={() => setActiveModal(null)} />}
+                    {activeModal === "editBuild" && <EditBuild setBuilds={setBuildsList} onClose={() => setActiveModal(null)} />}
 
                     {activeModal === "accessAuthorisationEditProfile" && <AccessAuthorisation user={user} onVerified={() => setActiveModal("editProfile")} />}
                     {activeModal === "editProfile" && <EditProfile user={user} setUser={setUser} onClose={() => setActiveModal(null)} />}

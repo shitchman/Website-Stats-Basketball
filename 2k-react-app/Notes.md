@@ -10,6 +10,9 @@ Frontend: npm run dev
 Then open: http://localhost:5173 and http://localhost:8000
 
 
+CHECKING PROGRESS IN CONSOLE:  console.log("Message:", dataBeingChecked);
+
+
 HTTP methods (routers)
 
 | Method     | Typical purpose  | Example                 |

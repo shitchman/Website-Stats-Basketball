@@ -17,7 +17,7 @@ class PlayerStatline(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     game_id: Mapped[int] = mapped_column(Integer, ForeignKey('games.id', ondelete='CASCADE'), nullable=False)
-    build_id: Mapped[int] = mapped_column(Integer, ForeignKey('builds.id', ondelete='CASCADE'), nullable=False)
+    build_id: Mapped[int] = mapped_column(Integer, ForeignKey('builds.id', ondelete='CASCADE'), nullable=True)
     friend_id: Mapped[int] = mapped_column(Integer, ForeignKey('friends.id'), nullable=True)
     friend_build_id: Mapped[int] = mapped_column(Integer, ForeignKey('builds.id'), nullable=True)
 

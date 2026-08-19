@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Row, Card, Table } from "react-bootstrap";
+import { apiFetch } from "../../api.js";
 
 function DashboardHome({ user }) {
 
@@ -38,6 +39,18 @@ function DashboardHome({ user }) {
     useEffect(() => {
         document.title = "Hoop Stats - Dashboard";
     }, []);
+
+   const [friendsList, setFriendsList] = useState([]);
+   
+   useEffect(() => {
+      const loadFriends = async () => {
+         const response = await apiFetch('/friends/myFriends');
+         if (response.ok) {
+            setFriendsList(await response.json());
+         }
+      };
+      loadFriends();
+   }, []);
 
     return (
         <Container fluid className="justify-content-center">
@@ -116,7 +129,7 @@ function DashboardHome({ user }) {
 
                         <Card.Body className="hero-content text-white rounded-4 w-100 flex-grow-1">
                             {/* Friends title */}
-                            <h1 style={{ color: "rgba(255, 102, 0, 0.95)" }}>Friends</h1>
+                            <h1 style={{ color: "rgba(255, 102, 0, 0.95)" }}><span className="fw-normal" style={{ color: "rgba(145, 148, 148, 1.0)"}}>Friends: </span>The Rec</h1>
                             <p className="fw-light" style={{ color: "rgba(145, 148, 148, 1.0)" }}>Performance overview </p>
                             <Table className="recent-games-table dashboard-tables" responsive >
                                 <thead>

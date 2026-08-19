@@ -15,7 +15,7 @@ function AddBuild({ setBuilds, onClose }) {
 
   const handleBuildAddition = async () => {
     try {
-      const response = await apiFetch('/builds/', {
+      const response = await apiFetch('/builds/newUserBuild', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', },
         body: JSON.stringify({ build_name: buildName.trim(), preferred_position: preferredPosition.trim() }),
@@ -38,7 +38,7 @@ function AddBuild({ setBuilds, onClose }) {
         return;
       }
 
-      const buildsListResponse = await apiFetch('/builds/me');
+      const buildsListResponse = await apiFetch('/builds/myBuilds');
 
       if (!buildsListResponse.ok) {
         setAlertMessage('Build addition succeeded, but the builds list could not be reloaded.');
@@ -47,7 +47,6 @@ function AddBuild({ setBuilds, onClose }) {
       }
 
       setBuilds(await buildsListResponse.json());
-      console.log("Build added successfully:", responseText);
       onClose();
 
     } catch (error) {
@@ -145,7 +144,13 @@ function AddBuild({ setBuilds, onClose }) {
                 </Form.Select>
               </Row>
 
-              <Button type="submit" className="btn btn-primary" style={{ backgroundColor: "rgba(255, 102, 0, 0.95)", borderColor: "rgba(255, 102, 0, 0.95)" }} id="confirmBuildButton" disabled={isSubmitting}>
+              <Button 
+               type="submit" 
+               className="btn btn-primary" 
+               style={{ backgroundColor: "rgba(255, 102, 0, 0.95)", borderColor: "rgba(255, 102, 0, 0.95)" }} 
+               id="confirmBuildButton" 
+               disabled={isSubmitting}
+              >
                 {isSubmitting ? 'Adding build...' : 'Add Build'}
               </Button>
             </Form>

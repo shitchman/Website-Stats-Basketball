@@ -12,8 +12,8 @@ function BaseDashboard({ children, setCurrentPage, currentPage, setUser }) {
     }, [currentPage]);
 
     
-    async function handleLogout() {
-        try {
+   async function handleLogout() {
+         try {
             const response = await apiFetch("/userAccount/logout", { 
                 method: "POST"
             });
@@ -27,21 +27,21 @@ function BaseDashboard({ children, setCurrentPage, currentPage, setUser }) {
             setUser(null);
             setCurrentPage("login");
 
-        } catch (error) {
+         } catch (error) {
             setAlertMessage('Unable to connect to the server.');
             setShowAlert(true);
-        }
-    }
+         }
+      }
 
-    const getPageLabel = (key) => {
+      const getPageLabel = (key) => {
         switch (key) {
-            case 'dashboardHome': return 'dashboard';
-            case 'addGames': return 'addGames';
-            case 'stats': return 'stats';
-            case 'profile': return 'profile';
-            default: return 'dashboard';
+            case 'dashboardHome': return 'Dashboard';
+            case 'addGames': return 'Add Games';
+            case 'stats': return 'Stats';
+            case 'profile': return 'Profile';
+            default: return 'Dashboard';
         }
-    };
+      };
 
     return (
         <>

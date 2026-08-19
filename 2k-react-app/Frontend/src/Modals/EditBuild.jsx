@@ -14,10 +14,9 @@ function EditBuild({ setBuilds, onClose }) {
 
     useEffect(() => {
         const loadBuilds = async () => {
-            const response = await apiFetch('/builds/me');
+            const response = await apiFetch('/builds/myBuilds');
             if (response.ok) {
-                const data = await response.json();
-                setBuildsList(data);
+                setBuildsList(await response.json());
             }
         };
 
@@ -60,8 +59,8 @@ function EditBuild({ setBuilds, onClose }) {
         setIsSubmitting(true);
 
         try {
-            const response = await apiFetch(`/builds/updatebuilds?build_id=${selectedBuildId}`, {
-                method: 'PUT',
+            const response = await apiFetch(`/builds/updateUserBuild?build_id=${selectedBuildId}`, {
+                method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     build_name: buildName.trim(),
@@ -74,7 +73,7 @@ function EditBuild({ setBuilds, onClose }) {
                 throw new Error(errorData?.detail || `Update failed (${response.status}).`);
             }
 
-            const refreshedBuildsResponse = await apiFetch('/builds/me');
+            const refreshedBuildsResponse = await apiFetch('/builds/myBuilds');
             if (refreshedBuildsResponse.ok) {
                 const updatedBuilds = await refreshedBuildsResponse.json();
                 setBuildsList(updatedBuilds);
@@ -82,7 +81,6 @@ function EditBuild({ setBuilds, onClose }) {
                     setBuilds(updatedBuilds);
                 }
             }
-
             onClose();
         } catch (error) {
             console.error('Error updating build:', error);
