@@ -4,95 +4,95 @@ import { BsList, BsPersonCircle } from "react-icons/bs";
 import { apiFetch } from "../../api.js";
 
 function BaseDashboard({ children, setCurrentPage, currentPage, setUser }) {
-    const [showAlert, setShowAlert] = useState(false);
-    const [alertMessage, setAlertMessage] = useState('');
+   const [showAlert, setShowAlert] = useState(false);
+   const [alertMessage, setAlertMessage] = useState('');
 
-    useEffect(() => {
-        document.title = `Hoop Stats - ${getPageLabel(currentPage)}`;
-    }, [currentPage]);
+   useEffect(() => {
+      document.title = `Hoop Stats - ${getPageLabel(currentPage)}`;
+   }, [currentPage]);
 
-    
+
    async function handleLogout() {
-         try {
-            const response = await apiFetch("/userAccount/logout", { 
-                method: "POST"
-            });
+      try {
+         const response = await apiFetch("/userAccount/logout", {
+            method: "POST"
+         });
 
-            if (!response.ok) {
-                setAlertMessage('Logout failed');
-                setShowAlert(true);
-                return;
-            }
-
-            setUser(null);
-            setCurrentPage("login");
-
-         } catch (error) {
-            setAlertMessage('Unable to connect to the server.');
+         if (!response.ok) {
+            setAlertMessage('Logout failed');
             setShowAlert(true);
+            return;
          }
+
+         setUser(null);
+         setCurrentPage("login");
+
+      } catch (error) {
+         setAlertMessage('Unable to connect to the server.');
+         setShowAlert(true);
       }
+   }
 
-      const getPageLabel = (key) => {
-        switch (key) {
-            case 'dashboardHome': return 'Dashboard';
-            case 'addGames': return 'Add Games';
-            case 'stats': return 'Stats';
-            case 'profile': return 'Profile';
-            default: return 'Dashboard';
-        }
-      };
+   const getPageLabel = (key) => {
+      switch (key) {
+         case 'dashboardHome': return 'Dashboard';
+         case 'addGames': return 'Add Games';
+         case 'stats': return 'Stats';
+         case 'profile': return 'Profile';
+         default: return 'Dashboard';
+      }
+   };
 
-    return (
-        <>
-            <Navbar expand="xxs" sticky="top" variant="dark" bg="dark" className="align-items-center">
-                <Container fluid className="align-items-center position-relative">
-                    <div className="d-flex align-items-center">
-                        {/* Dashboard dropdown */}
-                        <Nav className="align-items-center">
-                            <NavDropdown className="dashboard-dropdown" title={<BsList size={28} color="white" />} align="start">
-                                <NavDropdown.Item href="#" onClick={() => setCurrentPage('dashboardHome')}>
-                                    Dashboard
-                                </NavDropdown.Item>
-                                <NavDropdown.Item href="#" onClick={() => setCurrentPage('addGames')}>
-                                    Add Games
-                                </NavDropdown.Item>
-                                <NavDropdown.Item href="#" onClick={() => setCurrentPage('stats')}>
-                                    Stats
-                                </NavDropdown.Item>
-                            </NavDropdown>
-                        </Nav>
+   return (
+      <>
+         <Navbar expand="xxs" sticky="top" variant="dark" bg="dark" className="align-items-center">
+            <Container fluid className="align-items-center position-relative">
+               <div className="d-flex align-items-center">
+                  {/* Dashboard dropdown */}
+                  <Nav className="align-items-center">
+                     <NavDropdown className="dashboard-dropdown" title={<BsList size={28} color="white" />} align="start">
+                        <NavDropdown.Item href="#" onClick={() => setCurrentPage('dashboardHome')}>
+                           Dashboard
+                        </NavDropdown.Item>
+                        <NavDropdown.Item href="#" onClick={() => setCurrentPage('addGames')}>
+                           Add Games
+                        </NavDropdown.Item>
+                        <NavDropdown.Item href="#" onClick={() => setCurrentPage('stats')}>
+                           Stats
+                        </NavDropdown.Item>
+                     </NavDropdown>
+                  </Nav>
 
-                        <Navbar.Text className="ms-2 text-white d-none d-sm-block">
-                            {getPageLabel(currentPage)}
-                        </Navbar.Text>
-                    </div>
+                  <Navbar.Text className="ms-2 text-white d-none d-sm-block">
+                     {getPageLabel(currentPage)}
+                  </Navbar.Text>
+               </div>
 
-                    <Navbar.Brand className="position-absolute start-50 translate-middle-x text-center" href="#" onClick={() => setCurrentPage('dashboardHome')}>
-                        Hoop Stats
-                    </Navbar.Brand>
+               <Navbar.Brand className="position-absolute start-50 translate-middle-x text-center" href="#" onClick={() => setCurrentPage('dashboardHome')}>
+                  Hoop Stats
+               </Navbar.Brand>
 
-                    {/* Profile Dropdown */}
-                    <Nav className="ms-auto align-items-center">
-                        <NavDropdown drop="start" className="dashboard-dropdown" title={<BsPersonCircle size={28} color="white" />} align="end">
-                            <NavDropdown.Item href="#" onClick={() => setCurrentPage('profile')}>
-                                Profile
-                            </NavDropdown.Item>
-                            <NavDropdown.Item href="#" onClick={handleLogout}>
-                                Logout
-                            </NavDropdown.Item>
-                        </NavDropdown>
-                    </Nav>
-                </Container>
-            </Navbar>
+               {/* Profile Dropdown */}
+               <Nav className="ms-auto align-items-center">
+                  <NavDropdown drop="start" className="dashboard-dropdown" title={<BsPersonCircle size={28} color="white" />} align="end">
+                     <NavDropdown.Item href="#" onClick={() => setCurrentPage('profile')}>
+                        Profile
+                     </NavDropdown.Item>
+                     <NavDropdown.Item href="#" onClick={handleLogout}>
+                        Logout
+                     </NavDropdown.Item>
+                  </NavDropdown>
+               </Nav>
+            </Container>
+         </Navbar>
 
-            <div className="jordan-hero-overlay d-flex">
-                <Container fluid>
-                    {children}
-                </Container>
-            </div>
-        </>
-    );
+         <div className="jordan-hero-overlay d-flex">
+            <Container fluid>
+               {children}
+            </Container>
+         </div>
+      </>
+   );
 }
 
 export default BaseDashboard;

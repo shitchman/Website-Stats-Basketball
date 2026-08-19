@@ -1,4 +1,4 @@
-import { Container, Row, Card, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { apiFetch } from "../../api.js";
 
@@ -111,7 +111,7 @@ function EditFriend({ setFriends, setBuilds, onClose }) {
          }
 
          const friendsListResponse = await apiFetch('/friends/myFriends');
-         
+
          if (!friendsListResponse.ok) {
             setAlertMessage(`Friend updated successfully, but the friends list could not be reloaded (${friendsListResponse.status}).`);
             setShowAlert(true);
@@ -123,6 +123,60 @@ function EditFriend({ setFriends, setBuilds, onClose }) {
       } catch (error) {
          console.error('Error updating friend:', error);
          setAlertMessage("An error occurred while updating the friend.");
+         setShowAlert(true);
+      } finally {
+         setIsSubmitting(false);
+      }
+   };
+
+   const handleDeleteFriend = async () => {
+      if (!selectedFriendId) {
+         setAlertMessage("Please select a friend to delete.");
+         setShowAlert(true);
+         return;
+      }
+
+      setShowAlert(false);
+      setAlertMessage("");
+      setIsSubmitting(true);
+
+      try {
+         const response = await apiFetch(`/friends/deleteFriend?friend_id=${selectedFriendId}`, {
+            method: 'DELETE'
+         });
+
+         const responseText = await response.text();
+         let data = null;
+
+         if (responseText) {
+            try {
+               data = JSON.parse(responseText);
+            } catch {
+               data = null;
+            }
+         }
+
+         if (!response.ok) {
+            setAlertMessage(data?.detail || `Delete failed (${response.status}).`);
+            setShowAlert(true);
+            return;
+         }
+
+         const friendsListResponse = await apiFetch('/friends/myFriends');
+
+         if (!friendsListResponse.ok) {
+            setAlertMessage(`Friend deleted successfully, but the friends list could not be reloaded (${friendsListResponse.status}).`);
+            setShowAlert(true);
+            return;
+         }
+
+         const updatedFriends = await friendsListResponse.json();
+         setFriends(updatedFriends);
+         onClose();
+
+      } catch (error) {
+         console.error('Error deleting friend:', error);
+         setAlertMessage("An error occurred while deleting the friend.");
          setShowAlert(true);
       } finally {
          setIsSubmitting(false);
@@ -212,7 +266,7 @@ function EditFriend({ setFriends, setBuilds, onClose }) {
    const handleBuildEditSelection = (event) => {
       const buildId = Number(event.target.value);
       const selected = friendsBuilds.find((build) => build.id === buildId);
-      
+
       setSelectedFriendBuildId(buildId || "");
 
       if (!selected) {
@@ -249,62 +303,131 @@ function EditFriend({ setFriends, setBuilds, onClose }) {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-            build_name: buildName.trim(),
-            preferred_position: preferredPosition.trim(),}),
+               build_name: buildName.trim(),
+               preferred_position: preferredPosition.trim(),
+            }),
          });
 
          const responseText = await response.text();
-            let data = null;
+         let data = null;
 
-            if (responseText) {
-               try {
-                  data = JSON.parse(responseText);
-               } catch {
-                  data = null;
-               }
+         if (responseText) {
+            try {
+               data = JSON.parse(responseText);
+            } catch {
+               data = null;
             }
-
-            if (!response.ok) {
-               setAlertMessage(data?.detail || `Update failed (${response.status}).`);
-               setShowAlert(true);
-               return;
-            }
-
-            const buildListResponse = await apiFetch('/builds/friendsBuilds');
-            
-            if (!buildListResponse.ok) {
-               setAlertMessage("Build updated successfully, but the builds list could not be reloaded.");
-               setShowAlert(true);
-               return;
-            }
-
-            const updatedBuilds = await buildListResponse.json();
-            
-            if (setBuilds) {
-               setBuilds(updatedBuilds);
-            }
-
-            const friendsListResponse = await apiFetch('/friends/myFriends');
-            
-            if (!friendsListResponse.ok) {
-               setAlertMessage("Build updated successfully, but the friends list could not be reloaded.");
-               setShowAlert(true);
-               return;
-            }
-
-            const updatedFriends = await friendsListResponse.json();
-            setFriends(updatedFriends);
-            onClose();
-
-         } catch (error) {
-            console.error('Error updating build:', error);
-            setAlertMessage("An error occurred while updating the build.");
-            setShowAlert(true);
-         } finally {
-            setIsSubmitting(false);
          }
-      };
 
+         if (!response.ok) {
+            setAlertMessage(data?.detail || `Update failed (${response.status}).`);
+            setShowAlert(true);
+            return;
+         }
+
+         const buildListResponse = await apiFetch('/builds/friendsBuilds');
+
+         if (!buildListResponse.ok) {
+            setAlertMessage("Build updated successfully, but the builds list could not be reloaded.");
+            setShowAlert(true);
+            return;
+         }
+
+         const updatedBuilds = await buildListResponse.json();
+
+         if (setBuilds) {
+            setBuilds(updatedBuilds);
+         }
+
+         const friendsListResponse = await apiFetch('/friends/myFriends');
+
+         if (!friendsListResponse.ok) {
+            setAlertMessage("Build updated successfully, but the friends list could not be reloaded.");
+            setShowAlert(true);
+            return;
+         }
+
+         const updatedFriends = await friendsListResponse.json();
+         setFriends(updatedFriends);
+         onClose();
+
+      } catch (error) {
+         console.error('Error updating build:', error);
+         setAlertMessage("An error occurred while updating the build.");
+         setShowAlert(true);
+      } finally {
+         setIsSubmitting(false);
+      }
+   };
+
+   const handleDeleteFriendBuild = async () => {
+
+      if (!selectedFriendBuildId) {
+         setAlertMessage("Please select a build to delete.");
+         setShowAlert(true);
+         return;
+      }
+
+      setShowAlert(false);
+      setAlertMessage("");
+      setIsSubmitting(true);
+
+      try {
+         const response = await apiFetch(`/builds/deleteFriendBuild?build_id=${selectedFriendBuildId}`, {
+            method: 'DELETE'
+         });
+
+         const responseText = await response.text();
+         let data = null;
+
+         if (responseText) {
+            try {
+               data = JSON.parse(responseText);
+            } catch {
+               data = null;
+            }
+         }
+
+         if (!response.ok) {
+            setAlertMessage(data?.detail || `Delete failed (${response.status}).`);
+            setShowAlert(true);
+            return;
+         }
+
+         const buildListResponse = await apiFetch('/builds/friendsBuilds');
+
+         if (!buildListResponse.ok) {
+            setAlertMessage("Build deleted successfully, but the builds list could not be reloaded.");
+            setShowAlert(true);
+            return;
+         }
+
+         const updatedBuilds = await buildListResponse.json();
+         setFriendsBuildslist(updatedBuilds);
+         setSelectedFriendBuildId("");
+         setBuildName("");
+         setPreferredPosition("");
+
+         const friendsListResponse = await apiFetch('/friends/myFriends');
+
+         if (!friendsListResponse.ok) {
+            setAlertMessage("Build deleted successfully, but the friends list could not be reloaded.");
+            setShowAlert(true);
+            return;
+         }
+
+         const updatedFriends = await friendsListResponse.json();
+         setFriends(updatedFriends);
+         onClose();
+
+      } catch (error) {
+         console.error('Error deleting friend build:', error);
+         setAlertMessage("An error occurred while deleting the friend build.");
+         setShowAlert(true);
+      } finally {
+         setIsSubmitting(false);
+      }
+   };
 
    return (
       <Container>
@@ -381,7 +504,7 @@ function EditFriend({ setFriends, setBuilds, onClose }) {
                   <Card.Body className="hero-content text-white">
                      <Form
                         id="editFriendForm"
-                        method="post" 
+                        method="post"
                         onSubmit={handleFriendEditSubmit}
                      >
 
@@ -433,16 +556,34 @@ function EditFriend({ setFriends, setBuilds, onClose }) {
                         </Row>
 
                         {/* Submit button */}
-                        <Button
-                           type="submit"
-                           className="btn btn-primary"
-                           style={{ backgroundColor: "rgba(255, 102, 0, 0.95)", borderColor: "rgba(255, 102, 0, 0.95)" }}
-                           id="confirmFriendButton"
-                           disabled={isSubmitting}
-                        >
-                           {isSubmitting ? 'Updating friend...' : 'Update Friend'}
-                        </Button>
+                        <Row>
+                           <Col className="d-flex flex-nowrap justify-content-center gap-3">
+                              {/* Submit button */}
+                              <Button
+                                 type="submit"
+                                 className="btn"
+                                 style={{ backgroundColor: "rgba(255, 102, 0, 0.95)", borderColor: "rgba(255, 102, 0, 0.95)" }}
+                                 id="editFriendButton"
+                                 disabled={isSubmitting}>
 
+                                 {isSubmitting ? 'Editing Friend...' : 'Edit Friend'}
+                              </Button>
+                           </Col>
+
+                           <Col className="d-flex flex-nowrap justify-content-center gap-3">
+                              {/* Delete button */}
+                              <Button
+                                 type="button"
+                                 className="btn"
+                                 style={{ backgroundColor: "rgba(255, 0, 0, 0.95)", borderColor: "rgba(255, 0, 0, 0.95)" }}
+                                 id="deleteFriendButton"
+                                 disabled={isSubmitting}
+                                 onClick={handleDeleteFriend}>
+
+                                 {isSubmitting ? 'Deleting Friend...' : 'Delete Friend'}
+                              </Button>
+                           </Col>
+                        </Row>
                      </Form>
                   </Card.Body>
                </Card>
@@ -474,8 +615,8 @@ function EditFriend({ setFriends, setBuilds, onClose }) {
 
                         {/* Build name */}
                         <Row className="mb-3">
-                           <Form.Label 
-                              htmlFor="buildName" 
+                           <Form.Label
+                              htmlFor="buildName"
                               className="text-start"
                            >
                               Build Name
@@ -493,8 +634,8 @@ function EditFriend({ setFriends, setBuilds, onClose }) {
 
                         {/* Preferred position */}
                         <Row className="mb-3">
-                           <Form.Label 
-                              htmlFor="preferredPosition" 
+                           <Form.Label
+                              htmlFor="preferredPosition"
                               className="text-start"
                            >
                               Preferred Position
@@ -555,10 +696,10 @@ function EditFriend({ setFriends, setBuilds, onClose }) {
                         >
                            <option value="">Builds</option>
                            {friendsBuilds.filter((build) => build.friend_id === selectedFriendId).map((build) => (
-                                 <option key={build.id} value={build.id}>
-                                    {build.build_name}
-                                 </option>
-                              ))}
+                              <option key={build.id} value={build.id}>
+                                 {build.build_name}
+                              </option>
+                           ))}
                         </Form.Select>
                      </Row>
 
@@ -577,8 +718,8 @@ function EditFriend({ setFriends, setBuilds, onClose }) {
 
                         {/* Build name */}
                         <Row className="mb-3">
-                           <Form.Label 
-                              htmlFor="buildName" 
+                           <Form.Label
+                              htmlFor="buildName"
                               className="text-start"
                            >
                               Build Name
@@ -596,8 +737,8 @@ function EditFriend({ setFriends, setBuilds, onClose }) {
 
                         {/* Preferred position */}
                         <Row className="mb-3">
-                           <Form.Label 
-                              htmlFor="preferredPosition" 
+                           <Form.Label
+                              htmlFor="preferredPosition"
                               className="text-start"
                            >
                               Preferred Position
@@ -619,25 +760,39 @@ function EditFriend({ setFriends, setBuilds, onClose }) {
                            </Form.Select>
                         </Row>
 
-                        {/* Submit button */}
-                        <Button
-                           type="submit"
-                           className="btn btn-primary"
-                           style={{ backgroundColor: "rgba(255, 102, 0, 0.95)", borderColor: "rgba(255, 102, 0, 0.95)" }}
-                           id="editFriendBuildButton"
-                           disabled={isSubmitting}>
+                        <Row>
+                           <Col className="d-flex flex-nowrap justify-content-center gap-3">
+                              {/* Submit button */}
+                              <Button
+                                 type="submit"
+                                 className="btn"
+                                 style={{ backgroundColor: "rgba(255, 102, 0, 0.95)", borderColor: "rgba(255, 102, 0, 0.95)" }}
+                                 id="editFriendBuildButton"
+                                 disabled={isSubmitting}>
 
-                           {isSubmitting ? 'Editing Build...' : 'Edit Build'}
-                        </Button>
+                                 {isSubmitting ? 'Editing Build...' : 'Edit Build'}
+                              </Button>
+                           </Col>
 
+                           <Col className="d-flex flex-nowrap justify-content-center gap-3">
+                              {/* Delete button */}
+                              <Button
+                                 type="button"
+                                 className="btn"
+                                 style={{ backgroundColor: "rgba(255, 0, 0, 0.95)", borderColor: "rgba(255, 0, 0, 0.95)" }}
+                                 id="deleteFriendBuildButton"
+                                 disabled={isSubmitting}
+                                 onClick={handleDeleteFriendBuild}>
 
+                                 {isSubmitting ? 'Deleting Build...' : 'Delete Build'}
+                              </Button>
+                           </Col>
+                        </Row>
                      </Form>
                   </Card.Body>
                </Card>
             </Row>
          )}
-
-
       </Container>
    );
 }

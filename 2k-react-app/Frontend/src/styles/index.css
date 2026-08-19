@@ -1,130 +1,134 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+   --text: #6b6375;
+   --text-h: #08060d;
+   --bg: #fff;
+   --border: #e5e4e7;
+   --code-bg: #f4f3ec;
+   --accent: #aa3bff;
+   --accent-bg: rgba(170, 59, 255, 0.1);
+   --accent-border: rgba(170, 59, 255, 0.5);
+   --social-bg: rgba(244, 243, 236, 0.5);
+   --shadow:
+      rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+   --mono: ui-monospace, Consolas, monospace;
 
-  font: clamp(16px, 1vw + 1px, 18px)/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+   font: clamp(16px, 1vw + 1px, 18px)/145% var(--sans);
+   letter-spacing: 0.18px;
+   color-scheme: light dark;
+   color: var(--text);
+   background: var(--bg);
+   font-synthesis: none;
+   text-rendering: optimizeLegibility;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+   :root {
+      --text: #9ca3af;
+      --text-h: #f3f4f6;
+      --bg: #16171d;
+      --border: #2e303a;
+      --code-bg: #1f2028;
+      --accent: #c084fc;
+      --accent-bg: rgba(192, 132, 252, 0.15);
+      --accent-border: rgba(192, 132, 252, 0.5);
+      --social-bg: rgba(47, 48, 58, 0.5);
+      --shadow:
+         rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+   }
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+   #social .button-icon {
+      filter: invert(1) brightness(2);
+   }
 }
 
 
 html,
 body {
-  min-height: 100%;
-  min-width: 100%;
+   min-height: 100%;
+   min-width: 100%;
 }
 
 html {
-  height: 100%;
+   height: 100%;
 }
 
 body {
-  margin: 0;
+   margin: 0;
 }
 
 #root {
-  width: 100%;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+   width: 100%;
+   max-width: 100%;
+   margin: 0 auto;
+   text-align: center;
+   border-inline: 1px solid var(--border);
+   min-height: 100vh;
+   display: flex;
+   flex-direction: column;
+   box-sizing: border-box;
 }
 
-h1,h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+h1,
+h2 {
+   font-family: var(--heading);
+   font-weight: 500;
+   color: var(--text-h);
 }
 
 h1 {
-  font-size: clamp(32px, 4.5vw, 56px);
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    margin: 20px 0;
-  }
+   font-size: clamp(32px, 4.5vw, 56px);
+   letter-spacing: -1.68px;
+   margin: 32px 0;
+
+   @media (max-width: 1024px) {
+      margin: 20px 0;
+   }
 }
+
 h2 {
-  font-size: clamp(18px, 2.5vw, 24px);
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
+   font-size: clamp(18px, 2.5vw, 24px);
+   line-height: 118%;
+   letter-spacing: -0.24px;
+   margin: 0 0 8px;
 }
+
 p {
-  margin: 0;
+   margin: 0;
 }
 
 code,
 .counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+   font-family: var(--mono);
+   display: inline-flex;
+   border-radius: 4px;
+   color: var(--text-h);
 }
 
 code {
-  font-size: clamp(13px, 1vw, 15px);
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+   font-size: clamp(13px, 1vw, 15px);
+   line-height: 135%;
+   padding: 4px 8px;
+   background: var(--code-bg);
 }
 
 
 
 /* Constrain typography inside the auth home column */
 .auth-content h1 {
-  font-size: clamp(28px, 3.5vw, 37px);
-  margin: 0 0 8px 0;
-  line-height: 1.05;
+   font-size: clamp(28px, 3.5vw, 37px);
+   margin: 0 0 8px 0;
+   line-height: 1.05;
 }
 
 .auth-content p {
-  font-size: clamp(14px, 1.4vw, 16px);
-  margin: 0;
-  overflow-wrap: break-word;
+   font-size: clamp(14px, 1.4vw, 16px);
+   margin: 0;
+   overflow-wrap: break-word;
 }
 
 
@@ -132,81 +136,86 @@ code {
 
 /* This is for young Pattrick on the authentication pages */
 .mills-hero-overlay {
-  height: 100vh;
-  color: white;
-  display: flex;
+   height: 100vh;
+   color: white;
+   display: flex;
 
-  background: 
-    linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-    url("../assets/Mills.png");
+   background:
+      linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+      url("../assets/Mills.png");
 
-  background-size: cover;
-  background-position: top;
+   background-size: cover;
+   background-position: top;
 }
+
 /* This is for background of the dashboard pages */
 .jordan-hero-overlay {
-  position: relative;
-  min-height: 100vh;
-  color: white;
-  display: flex;
-  overflow: hidden;
+   position: relative;
+   min-height: 100vh;
+   color: white;
+   display: flex;
+   overflow: hidden;
 }
+
 .jordan-hero-overlay::before {
-  content: "";
-  position: absolute;
-  inset: 0;
+   content: "";
+   position: absolute;
+   inset: 0;
 
-  background: 
-    linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-    url("../assets/JordanShot.png");
+   background:
+      linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+      url("../assets/JordanShot.png");
 
-  background-size: cover;
-  background-position: center;
+   background-size: cover;
+   background-position: center;
 
-  filter: blur(13px);
-  transform: scale(1.05); 
-  z-index: 0;
+   filter: blur(13px);
+   transform: scale(1.05);
+   z-index: 0;
 }
-.jordan-hero-overlay > * {
-  position: relative;
-  z-index: 1;
+
+.jordan-hero-overlay>* {
+   position: relative;
+   z-index: 1;
 }
+
 /* Background for modals in profile page */
 .boomers-hero-overlay::before {
-  content: "";
-  position: absolute;
-  inset: 0;
+   content: "";
+   position: absolute;
+   inset: 0;
 
-  background: 
-    linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
-    url("../assets/BoomersBronze.png");
+   background:
+      linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+      url("../assets/BoomersBronze.png");
 
-  background-size: cover;
-  background-position: center;
+   background-size: cover;
+   background-position: center;
 
-  filter: blur(13px);
-  transform: scale(1.05); 
-  z-index: 0;
+   filter: blur(13px);
+   transform: scale(1.05);
+   z-index: 0;
 }
-.boomers-hero-overlay > * {
-  position: relative;
-  z-index: 1;
+
+.boomers-hero-overlay>* {
+   position: relative;
+   z-index: 1;
 }
 
 
 
 
 .box {
-  background: #eee;
-  padding: 20px;
-  border-radius: 10px;
+   background: #eee;
+   padding: 20px;
+   border-radius: 10px;
 }
 
 
 
 /* Used to set the colors of the blocks in dashboard */
 .bg-darker {
-  background-color: var(--dashboard-card-bg, #0D0D0D);
+   background-color: var(--dashboard-card-bg, #0D0D0D);
 }
 
 
@@ -214,127 +223,153 @@ code {
 /* GLOWING BLOCKS */
 
 .big-hero-card {
-    position: relative;
-    overflow: hidden;
-    isolation: isolate; /* Keeps the glow and content layers from bleeding into surrounding elements. */
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%; /* Makes the card match the column height so the visual block fills properly. */
+   position: relative;
+   overflow: hidden;
+   isolation: isolate;
+   /* Keeps the glow and content layers from bleeding into surrounding elements. */
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+   height: 100%;
+   /* Makes the card match the column height so the visual block fills properly. */
 
-    border-radius: 1.5rem;
-    border: 1px solid rgba(255, 102, 0, 0.35);
-    background: linear-gradient(135deg, #050505 0%, #111111 100%); /* Gives the card a richer dark background. */
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35); /* Adds depth so the card stands out from the page. */
+   border-radius: 1.5rem;
+   border: 1px solid rgba(255, 102, 0, 0.35);
+   background: linear-gradient(135deg, #050505 0%, #111111 100%);
+   /* Gives the card a richer dark background. */
+   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+   /* Adds depth so the card stands out from the page. */
 
-    color: white;
+   color: white;
 }
+
 .hero-card {
-    position: relative;
-    overflow: hidden;
-    isolation: isolate; /* Keeps the glow and content layers from bleeding into surrounding elements. */
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%; /* Makes the card match the column height so the visual block fills properly. */
-    min-height: 120px;
-    max-height: 450px;
+   position: relative;
+   overflow: hidden;
+   isolation: isolate;
+   /* Keeps the glow and content layers from bleeding into surrounding elements. */
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+   height: 100%;
+   /* Makes the card match the column height so the visual block fills properly. */
+   min-height: 120px;
+   max-height: 450px;
 
-    border-radius: 1.5rem;
-    border: 1px solid rgba(255, 102, 0, 0.35);
-    background: linear-gradient(135deg, #050505 0%, #111111 100%); /* Gives the card a richer dark background. */
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35); /* Adds depth so the card stands out from the page. */
+   border-radius: 1.5rem;
+   border: 1px solid rgba(255, 102, 0, 0.35);
+   background: linear-gradient(135deg, #050505 0%, #111111 100%);
+   /* Gives the card a richer dark background. */
+   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+   /* Adds depth so the card stands out from the page. */
 
-    color: white;
+   color: white;
 }
+
 .hero-card .card-body {
-  flex: 1;
+   flex: 1;
 }
-.hero-content {
-    position: relative;
-    z-index: 2; /* Keeps the content above the glow overlays. */
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Centers the content vertically inside the card. */
-}
-.hero-glow {
-    position: absolute;
-    z-index: 1; /* Places the glow behind the text content. */
-    pointer-events: none;
 
-    width: clamp(120px, 35%, 280px);
-    height: clamp(120px, 35%, 280px);
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 102, 0, 0.95) 0%, rgba(255, 102, 0, 0.25) 45%, rgba(255, 102, 0, 0) 80%); /* Softens the glow so it looks more like a light effect than a solid blob. */
-    filter: blur(clamp(40px, 6vw, 120px));
-    opacity: 0.9;
+.hero-content {
+   position: relative;
+   z-index: 2;
+   /* Keeps the content above the glow overlays. */
+   width: 100%;
+   height: 100%;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   /* Centers the content vertically inside the card. */
 }
+
+.hero-glow {
+   position: absolute;
+   z-index: 1;
+   /* Places the glow behind the text content. */
+   pointer-events: none;
+
+   width: clamp(120px, 35%, 280px);
+   height: clamp(120px, 35%, 280px);
+   border-radius: 50%;
+   background: radial-gradient(circle, rgba(255, 102, 0, 0.95) 0%, rgba(255, 102, 0, 0.25) 45%, rgba(255, 102, 0, 0) 80%);
+   /* Softens the glow so it looks more like a light effect than a solid blob. */
+   filter: blur(clamp(40px, 6vw, 120px));
+   opacity: 0.9;
+}
+
 .hero-glow-top-right {
-    top: -15%;
-    right: -15%;
+   top: -15%;
+   right: -15%;
 }
+
 .hero-glow-bottom-right {
-    bottom: -15%;
-    right: -15%;
+   bottom: -15%;
+   right: -15%;
 }
+
 .hero-glow-bottom-left {
-    bottom: -15%;
-    left: -15%;
+   bottom: -15%;
+   left: -15%;
 }
+
 .hero-glow-top-left {
-    top: -15%;
-    left: -15%;
+   top: -15%;
+   left: -15%;
 }
 
 
 /* Sets the background of the page to black*/
 .dashboard-root {
-  min-height: 100vh;
-  background-size: cover;
-  background-position: top;
-  background-color: var(--dashboard-bg, #000000);
+   min-height: 100vh;
+   background-size: cover;
+   background-position: top;
+   background-color: var(--dashboard-bg, #000000);
 }
 
 
 
 /* Remove the dropdown caret and keep the navbar height stable */
 .dashboard-dropdown {
-  position: relative;
+   position: relative;
 }
+
 .dashboard-dropdown .dropdown-toggle {
-  border: none;
-  background: transparent;
-  color: white !important;
+   border: none;
+   background: transparent;
+   color: white !important;
 }
+
 .dashboard-dropdown .dropdown-toggle::before {
-  display: none !important;
+   display: none !important;
 }
+
 .dashboard-dropdown .dropdown-toggle::after {
-  display: none !important;
+   display: none !important;
 }
+
 .dashboard-dropdown .dropdown-menu {
-  position: absolute !important;
-  top: 100% !important;
-  right: 0 !important;
+   position: absolute !important;
+   top: 100% !important;
+   right: 0 !important;
 
-  margin-top: 0.25rem !important;
-  min-width: 10rem;
+   margin-top: 0.25rem !important;
+   min-width: 10rem;
 
-  width: auto;
+   width: auto;
 
-  color: white;
+   color: white;
 
-  background-color: #212529;
-  border: 1px solid #333333;
+   background-color: #212529;
+   border: 1px solid #333333;
 }
+
 .dashboard-dropdown .dropdown-item {
-    color: white;
+   color: white;
 }
+
 .dashboard-dropdown .dropdown-item:hover {
-    background-color: #ff6600;
-    color: white;
+   background-color: #ff6600;
+   color: white;
 }
 
 
@@ -343,14 +378,16 @@ code {
 /* All tables */
 
 /* Remove Bootstrap cell backgrounds, this sets the backgroud to tranparent */
-.dashboard-tables > :not(caption) > * > * {
-    background-color: transparent !important;
-    color: white;;
+.dashboard-tables> :not(caption)>*>* {
+   background-color: transparent !important;
+   color: white;
+   ;
 }
+
 /* Text color in table data cells.*/
 .dashboard-tables td {
-    color:  rgba(145, 148, 148, 1.0) !important;
-    text-align: center;
+   color: rgba(145, 148, 148, 1.0) !important;
+   text-align: center;
 }
 
 
@@ -359,118 +396,124 @@ code {
 
 /* Outside border */
 .recent-games-table {
-    border: 4px solid rgba(145, 148, 148, 1.0) !important; 
+   border: 4px solid rgba(145, 148, 148, 1.0) !important;
 }
+
 /* Table heading settings */
 .recent-games-table thead th {
-    color: rgba(255, 102, 0, 0.95) !important;
-    padding: 0.75rem;
-    text-align: center;
+   color: rgba(255, 102, 0, 0.95) !important;
+   padding: 0.75rem;
+   text-align: center;
 
-    border-bottom: 4px solid rgba(145, 148, 148, 1.0) !important;
+   border-bottom: 4px solid rgba(145, 148, 148, 1.0) !important;
 }
+
 /* Sets the vertical interior borders to dashed */
 .recent-games-table td:not(:last-child),
 .recent-games-table th:not(:last-child) {
-    border-right: 2px dashed rgba(145, 148, 148, 1.0);
+   border-right: 2px dashed rgba(145, 148, 148, 1.0);
 }
+
 /* Sets the vertical interior borders to dashed */
 .recent-games-table td:not(:last-child),
 .recent-games-table th:not(:last-child) {
-    border-right: 2px dashed rgba(145, 148, 148, 1.0);
+   border-right: 2px dashed rgba(145, 148, 148, 1.0);
 }
+
 /* Effects the table data cells.*/
 .recent-games-tables td {
-    border-bottom: transparent;
+   border-bottom: transparent;
 }
 
 /* User table */
 
 /* Table heading settings */
 .user-table thead th {
-    color: rgba(255, 102, 0, 0.95) !important;
-    padding: 0rem;
-    text-align: center;
+   color: rgba(255, 102, 0, 0.95) !important;
+   padding: 0rem;
+   text-align: center;
 
-    border-bottom: transparent;
+   border-bottom: transparent;
 }
+
 /* Makes the border transparent.*/
 .user-table td {
-    border-bottom: transparent;
+   border-bottom: transparent;
 }
 
 
 
 /* Scorecard Uplaod */
 .scorecard-upload {
-    width: 100%;
-    min-height: 265px;
+   width: 100%;
+   min-height: 265px;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
 
-    border: 2px dashed #252b32;
-    border-radius: 1.5rem;
+   border: 2px dashed #252b32;
+   border-radius: 1.5rem;
 
-    background-color: transparent;
-    color: white;
+   background-color: transparent;
+   color: white;
 
-    cursor: pointer;
+   cursor: pointer;
 
-    transition: border-color 0.2s ease,
-                background-color 0.2s ease;
+   transition: border-color 0.2s ease,
+      background-color 0.2s ease;
 }
+
 .scorecard-upload:hover {
-    border-color: rgba(255, 102, 0, 0.5);
-    background-color: #10151a;
+   border-color: rgba(255, 102, 0, 0.5);
+   background-color: #10151a;
 }
 
 
 /* For dashed border */
 .dashed-border {
-    border: 2px dashed white;
-    border-radius: 1rem;
+   border: 2px dashed white;
+   border-radius: 1rem;
 }
 
 
 
 /* Sets a custom break point for the columns within the heading rows within the profile page */
 @media (max-width: 420px) {
-    .small-profile-custom-col {
-        flex: 0 0 50% !important;
-        max-width: 50% !important;
+   .small-profile-custom-col {
+      flex: 0 0 50% !important;
+      max-width: 50% !important;
 
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-    }
-    .large-profile-custom-col {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+   }
+
+   .large-profile-custom-col {
       flex: 0 0 100% !important;
       max-width: 100% !important;
 
       justify-content: center;
       align-items: center;
       text-align: center;
-    }
+   }
 }
 
 @media (max-width: 480px) {
-      .large-profile-header-custom-col {
+   .large-profile-header-custom-col {
       flex: 0 0 100% !important;
       max-width: 100% !important;
 
       justify-content: center;
       align-items: center;
       text-align: center;
-    }
+   }
 }
 
 
 /* Makes the page information blurry when the Modal is active */
 .modal-backdrop.show {
-    backdrop-filter: blur(12px);
-    background-color: rgba(0, 0, 0, 0.6);
+   backdrop-filter: blur(12px);
+   background-color: rgba(0, 0, 0, 0.6);
 }
-
