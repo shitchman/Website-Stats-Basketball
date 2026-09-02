@@ -12,10 +12,11 @@ from fastapi import APIRouter, Cookie, HTTPException, Response
 
 router = APIRouter()
 
-# Configuration settings for authentication, including secret key, algorithm, and token expiration time.
+# Configuration settings for authentication, including secret key, algorithm, and idle timeout.
 SECRET_KEY = settings.secret_key
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+SESSION_IDLE_TIMEOUT_MINUTES = 10
+SESSION_IDLE_TIMEOUT_SECONDS = SESSION_IDLE_TIMEOUT_MINUTES * 60
 
 
 password_hash = PasswordHash.recommended()
@@ -34,10 +35,21 @@ def verify_password(password: str, hashed_password: str):
 #Creates a JWT access token for the user with the given user_id, which can be used for authentication and authorization in the application. The token includes an expiration time and is signed with a secret key.
 def create_access_token(user_id: int):
 
-    expire = datetime.now(timezone.utc) + timedelta( minutes=ACCESS_TOKEN_EXPIRE_MINUTES )
+    expire = datetime.now(timezone.utc) + timedelta(minutes=SESSION_IDLE_TIMEOUT_MINUTES)
     payload = { "sub": str(user_id), "exp": expire}
 
     return jwt.encode( payload, SECRET_KEY, algorithm=ALGORITHM )
+
+
+def set_access_token_cookie(response: Response, access_token: str):
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        secure=False,
+        samesite="lax",
+        max_age=SESSION_IDLE_TIMEOUT_SECONDS,
+    )
 
 
 #Checks to make sure the user exists and that the password is correct. Upon success it will then create an access token
@@ -51,7 +63,7 @@ def authenticate_user(form, db, response: Response):
 
     access_token = create_access_token(user.id) #Creates an access token for the user with the given user_id
 
-    response.set_cookie(key="access_token", value=access_token, httponly=True, secure=False, samesite="lax", max_age=30*60) #Sets the access token as a cookie in the response, which can be used for authentication in subsequent requests
+    set_access_token_cookie(response, access_token)
 
     return {"access_token": access_token, "token_type": "bearer"}
 

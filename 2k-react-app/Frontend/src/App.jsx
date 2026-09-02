@@ -9,6 +9,7 @@ import DashboardHome from './pages/DashboardHome.jsx';
 import AddGames from './pages/AddGames.jsx';
 import Stats from './pages/Stats.jsx';
 import Profile from './pages/Profile.jsx';
+import useIdleSession from './hooks/useIdleSession.js';
 
 import { useState } from 'react';
 
@@ -17,6 +18,11 @@ function App() {
 
    const [user, setUser] = useState(null);
    const [currentPage, setCurrentPage] = useState('home');
+   const endSession = useIdleSession({
+      isAuthenticated: Boolean(user),
+      setUser,
+      setCurrentPage,
+   });
 
    const authPages = ['home', 'login', 'register']
    const dashboardPages = ['addGames', 'dashboardHome', 'profile', 'stats']
@@ -55,7 +61,7 @@ function App() {
 
    if (dashboardPages.includes(currentPage)) {
       return (
-         <BaseDashboard setCurrentPage={setCurrentPage} currentPage={currentPage} setUser={setUser}>
+         <BaseDashboard setCurrentPage={setCurrentPage} currentPage={currentPage} endSession={endSession}>
             {renderPage()}
          </BaseDashboard>
       );

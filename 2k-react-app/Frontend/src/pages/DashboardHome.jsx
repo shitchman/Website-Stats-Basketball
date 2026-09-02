@@ -1,60 +1,163 @@
 import React, { useEffect, useState } from "react";
-import { Col, Container, Row, Card, Table } from "react-bootstrap";
+import { Col, Container, Row, Card, Table, Dropdown } from "react-bootstrap";
 import { apiFetch } from "../../api.js";
+import { GAME_MODES } from "../constants/gameModes";
+
 
 function DashboardHome({ user }) {
 
+   const [games, setGames] = useState([]);
+   const [selectedGameMode, setSelectedGameMode] = useState(1); // Rec Center
+
+   useEffect(() => {
+      const loadGames = async () => {
+         const response = await apiFetch("/games/myGames");
+
+         if (response.ok) {
+            setGames(await response.json());
+         }
+      };
+
+      loadGames();
+   }, []);
+
+
+   const selectedGames = games.filter((game) => game.game_mode_id === selectedGameMode && game.user_statline);
+   const playedGameModes = GAME_MODES.filter((mode) => games.some((game) => game.game_mode_id === mode.id));
+
+   const displayedGameMode = playedGameModes.find((mode) => mode.id === selectedGameMode) ?? playedGameModes[0];
+
+   const totalWins = selectedGames.filter((game) => game.result === "W").length;
+   const totalLosses = selectedGames.filter((game) => game.result === "L").length;
+   const winPercentage = selectedGames.length > 0 ? ((totalWins / selectedGames.length) * 100).toFixed(2) : "0.00";
+
+   const qualifyingStatCount = (statline) =>
+      [
+         statline.points,
+         statline.rebounds,
+         statline.assists,
+         statline.steals,
+         statline.blocks,
+      ].filter((stat) => stat >= 10).length;
+
+   const doubleDoubles = selectedGames.filter((game) => qualifyingStatCount(game.user_statline) === 2).length;
+   const tripleDoublesPlus = selectedGames.filter((game) => qualifyingStatCount(game.user_statline) >= 3).length;
+   const careerHighPoints = Math.max(0, ...selectedGames.map((game) => game.user_statline.points));
+
+   const averageStat = (statName) =>
+      selectedGames.length > 0
+         ? (
+            selectedGames.reduce(
+               (total, game) => total + game.user_statline[statName],
+               0
+            ) / selectedGames.length
+         ).toFixed(2)
+         : "0.00";
+
+   const pointsPerGame = averageStat("points");
+   const reboundsPerGame = averageStat("rebounds");
+   const assistsPerGame = averageStat("assists");
+
    // This will not be kept in the long term, these will be stored in python files most likely
-   const teamStats = [
-      { id: 1, title: "Games Tracked", value: 28 },
-      { id: 2, title: "Team PPG", value: 89.5 },
-      { id: 3, title: "Team RPG", value: 36.2 },
-      { id: 4, title: "Team APG", value: 25.7 },
-      { id: 5, title: "Team SPG", value: 6.3 },
-      { id: 6, title: "Team BPG", value: 3.4 }
+   // Filter for selected game mode games that contain a team_statline
+   const teamStats = selectedGames.filter((game) => game.team_statline);
+
+   const averageTeamStat = (statName) =>
+      teamStats.length > 0
+         ? (
+            teamStats.reduce(
+               (total, game) => total + (game.team_statline[statName] || 0),
+               0
+            ) / teamStats.length
+         ).toFixed(1)
+         : "0.0";
+
+   const teamStatsData = [
+      { id: 1, title: "Games Tracked", value: teamStats.length },
+      { id: 2, title: "Team PPG", value: averageTeamStat("points") },
+      { id: 3, title: "Team RPG", value: averageTeamStat("rebounds") },
+      { id: 4, title: "Team APG", value: averageTeamStat("assists") },
+      { id: 5, title: "Team SPG", value: averageTeamStat("steals") },
+      { id: 6, title: "Team BPG", value: averageTeamStat("blocks") },
    ];
 
-   const gameStats = [
-      { id: 1, date: "1/1/26", build: 11, pointsFor: 11, pointsAgainst: 11, result: "W", points: 11, rebounds: 11, assists: 11, steals: 11, blocks: 11 },
-      { id: 2, date: "2/2/26", build: 22, pointsFor: 22, pointsAgainst: 22, result: "L", points: 22, rebounds: 22, assists: 22, steals: 22, blocks: 22 },
-      { id: 3, date: "3/3/26", build: 33, pointsFor: 33, pointsAgainst: 33, result: "W", points: 33, rebounds: 33, assists: 33, steals: 33, blocks: 33 },
-      { id: 4, date: "4/4/26", build: 44, pointsFor: 44, pointsAgainst: 44, result: "W", points: 4, rebounds: 44, assists: 44, steals: 44, blocks: 44 },
-      { id: 5, date: "5/5/26", build: 55, pointsFor: 55, pointsAgainst: 55, result: "W", points: 55, rebounds: 55, assists: 55, steals: 55, blocks: 55 },
-      { id: 6, date: "6/6/26", build: 66, pointsFor: 66, pointsAgainst: 66, result: "L", points: 66, rebounds: 66, assists: 66, steals: 66, blocks: 66 },
-      { id: 7, date: "7/7/26", build: 77, pointsFor: 77, pointsAgainst: 77, result: "L", points: 77, rebounds: 77, assists: 77, steals: 77, blocks: 77 },
-      { id: 8, date: "8/8/26", build: 88, pointsFor: 88, pointsAgainst: 88, result: "W", points: 88, rebounds: 88, assists: 88, steals: 88, blocks: 88 },
-      { id: 9, date: "9/9/26", build: 99, pointsFor: 99, pointsAgainst: 99, result: "W", points: 99, rebounds: 99, assists: 99, steals: 99, blocks: 99 },
-      { id: 10, date: "10/10/26", build: 100, pointsFor: 100, pointsAgainst: 100, result: "L", points: 100, rebounds: 100, assists: 100, steals: 100, blocks: 100 }
-   ];
+   // Get the 10 most recent games for the selected game mode
+   const recentGames = selectedGames.slice(0, 10);
 
-   const friendStats = [
-      { id: 1, name: "player1", ppg: 17.76, games: 410, winPercentage: 49.8 },
-      { id: 2, name: "player2", ppg: 16.38, games: 153, winPercentage: 46.4 },
-      { id: 3, name: "player3", ppg: 15.31, games: 299, winPercentage: 48.2 },
-      { id: 4, name: "player4", ppg: 20.12, games: 155, winPercentage: 51.3 },
-      { id: 5, name: "player5", ppg: 12.54, games: 73, winPercentage: 42.6 },
-      { id: 6, name: "player6", ppg: 7.83, games: 67, winPercentage: 50.3 }
-   ];
+   // Friends Containter data
+   const [friendStats, setFriendStats] = useState([]);
 
+   useEffect(() => {
+      const loadFriendStats = async () => {
+         if (!selectedGameMode) return;
+
+         const response = await apiFetch(`/friends/friendDashboardStats?game_mode_id=${selectedGameMode}`);
+         if (response.ok) {
+            setFriendStats(await response.json());
+         } else {
+            setFriendStats([]);
+         }
+      };
+      loadFriendStats();
+   }, [selectedGameMode]);
+
+   const sortedFriendStats = [...friendStats].sort((a, b) => {
+      if (b.games_played !== a.games_played) {
+         return b.games_played - a.games_played;
+      }
+      return b.ppg - a.ppg; // tie-breaker: higher PPG
+   });
+
+
+
+   // Document title
    useEffect(() => {
       document.title = "Hoop Stats - Dashboard";
    }, []);
 
-   const [friendsList, setFriendsList] = useState([]);
 
-   useEffect(() => {
-      const loadFriends = async () => {
-         const response = await apiFetch('/friends/myFriends');
-         if (response.ok) {
-            setFriendsList(await response.json());
-         }
-      };
-      loadFriends();
-   }, []);
 
    return (
       <Container fluid className="justify-content-center">
          <Row className="d-flex align-items-stretch w-100 justify-content-center mx-0 max-height-row" >
+            {/* Dashboard Game mode header */}
+            <Row className="d-flex pt-3 pb-3 justify-content-center">
+               <Col xs={12} sm={8} xl={8} className="d-flex justify-content-center">
+                  <div className="rounded flex-fill p-1 d-flex">
+                     <Card className="hero-card game-mode-card w-100 h-100">
+                        <div className="hero-glow-clip" aria-hidden="true">
+                           <div className="hero-glow hero-glow-top-right"></div>
+                           <div className="hero-glow hero-glow-bottom-left"></div>
+                        </div>
+
+                        <Card.Body className="hero-content text-white w-100 h-100 p-3 d-flex flex-column">
+                           <span>
+                              <h1 className="fw-normal" style={{ color: "rgba(145, 148, 148, 1.0)" }}>
+                                 Game Mode: {" "}
+                                 <Dropdown as="span" className="game-mode-dropdown">
+                                    <Dropdown.Toggle as="span" className="fw-semibold p-0 border-0" style={{ color: "rgba(255, 102, 0, 0.95)", cursor: "pointer" }}>
+                                       {displayedGameMode?.mode_name ?? "No games played"}
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                       {playedGameModes.map((mode) => (
+                                          <Dropdown.Item
+                                             key={mode.id}
+                                             active={mode.id === displayedGameMode?.id}
+                                             onClick={() => setSelectedGameMode(mode.id)}
+                                          >
+                                             {mode.mode_name}
+                                          </Dropdown.Item>
+                                       ))}
+                                    </Dropdown.Menu>
+                                 </Dropdown>
+                              </h1>
+                           </span>
+
+                        </Card.Body>
+                     </Card>
+                  </div>
+               </Col>
+            </Row>
             {/* Just username section */}
             <Col sm={12} md={6} xxl={5} className="mt-3 d-flex flex-column">
                <Card className="hero-card w-100 flex-grow-1">
@@ -75,45 +178,45 @@ function DashboardHome({ user }) {
                            <tr>
                               <td colSpan={2}>
                                  <p className="mb-0" style={{ textAlign: "left" }}>Wins</p>
-                                 <h1 className="text-white">68</h1>
+                                 <h1 className="text-white">{totalWins}</h1>
                               </td>
                               <td colSpan={2}>
                                  <p className="mb-0" style={{ textAlign: "left" }}>Losses</p>
-                                 <h1 className="text-white">55</h1>
+                                 <h1 className="text-white">{totalLosses}</h1>
                               </td>
                               <td colSpan={2}>
                                  <p className="mb-0" style={{ textAlign: "left" }}>Win %</p>
-                                 <h1 className="text-white">55.28</h1>
+                                 <h1 className="text-white">{winPercentage}</h1>
                               </td>
                            </tr>
 
                            <tr>
                               <td colSpan={2}>
                                  <p className="mb-0" style={{ textAlign: "left" }}>Double Doubles</p>
-                                 <h1 className="text-white">30</h1>
+                                 <h1 className="text-white">{doubleDoubles}</h1>
                               </td>
                               <td colSpan={2}>
                                  <p className="mb-0" style={{ textAlign: "left" }}>Triple Doubles</p>
-                                 <h1 className="text-white">4</h1>
+                                 <h1 className="text-white">{tripleDoublesPlus}</h1>
                               </td>
                               <td colSpan={2}>
                                  <p className="mb-0" style={{ textAlign: "left" }}>Career High</p>
-                                 <h1 className="text-white">45</h1>
+                                 <h1 className="text-white">{careerHighPoints}</h1>
                               </td>
                            </tr>
 
                            <tr>
                               <td colSpan={2}>
                                  <p className="mb-0" style={{ textAlign: "left" }}>PPG</p>
-                                 <h1 className="text-white">14.63</h1>
+                                 <h1 className="text-white">{pointsPerGame}</h1>
                               </td>
                               <td colSpan={2}>
                                  <p className="mb-0" style={{ textAlign: "left" }}>RPG</p>
-                                 <h1 className="text-white">10.2</h1>
+                                 <h1 className="text-white">{reboundsPerGame}</h1>
                               </td>
                               <td colSpan={2}>
                                  <p className="mb-0" style={{ textAlign: "left" }}>APG</p>
-                                 <h1 className="text-white">5.47</h1>
+                                 <h1 className="text-white">{assistsPerGame}</h1>
                               </td>
                            </tr>
                         </tbody>
@@ -129,8 +232,15 @@ function DashboardHome({ user }) {
 
                   <Card.Body className="hero-content text-white rounded-4 w-100 flex-grow-1">
                      {/* Friends title */}
-                     <h1 style={{ color: "rgba(255, 102, 0, 0.95)" }}><span className="fw-normal" style={{ color: "rgba(145, 148, 148, 1.0)" }}>Friends: </span>The Rec</h1>
+
+                     <Row>
+                        <Col>
+                           <h1 className="fw-semibold" style={{ color: "rgba(255, 102, 0, 0.95)" }}>Friends</h1>
+
+                        </Col>
+                     </Row>
                      <p className="fw-light" style={{ color: "rgba(145, 148, 148, 1.0)" }}>Performance overview </p>
+
                      <Table className="recent-games-table dashboard-tables" responsive >
                         <thead>
                            <tr>
@@ -142,14 +252,26 @@ function DashboardHome({ user }) {
                         </thead>
 
                         <tbody>
-                           {friendStats.map((stat, index) => (
-                              <tr key={stat.id || index}>
-                                 <td>{stat.name}</td>
-                                 <td>{stat.ppg}</td>
-                                 <td>{stat.games}</td>
-                                 <td><span className={stat.winPercentage > 50 ? "text-success" : "text-danger"}>{stat.winPercentage}</span></td>
+                           {friendStats.length > 0 ? (
+                              sortedFriendStats.map((stat) => (
+                                 <tr key={stat.id}>
+                                    <td>{stat.name}</td>
+                                    <td>{Number(stat.ppg).toFixed(2)}</td>
+                                    <td>{stat.games_played}</td>
+                                    <td>
+                                       <span className={stat.win_percentage >= 50 ? "text-success" : "text-danger"}>
+                                          {Number(stat.win_percentage).toFixed(1)}%
+                                       </span>
+                                    </td>
+                                 </tr>
+                              ))
+                           ) : (
+                              <tr>
+                                 <td colSpan={4} className="text-center text-muted py-3">
+                                    No friend games found for this game mode
+                                 </td>
                               </tr>
-                           ))}
+                           )}
                         </tbody>
                      </Table>
                   </Card.Body>
@@ -176,7 +298,7 @@ function DashboardHome({ user }) {
                </Col>
             </Row>
             {/* Team Stats Data */}
-            {teamStats.map((stat) => (
+            {teamStatsData.map((stat) => (
                <Col xs={12} sm={4} xl={2} key={stat.id} className="d-flex align-items-stretch justify-content-center">
                   <div className="rounded flex-fill p-1 d-flex">
                      <Card className="hero-card w-100 h-100">
@@ -223,20 +345,32 @@ function DashboardHome({ user }) {
                      </thead>
 
                      <tbody>
-                        {gameStats.map((stat, index) => (
-                           <tr key={stat.id || index}>
-                              <td>{stat.date}</td>
-                              <td>{stat.build}</td>
-                              <td>{stat.pointsFor}</td>
-                              <td>{stat.pointsAgainst}</td>
-                              <td><span className={stat.result === "W" ? "text-success" : "text-danger"}>{stat.result}</span></td>
-                              <td>{stat.points}</td>
-                              <td>{stat.rebounds}</td>
-                              <td>{stat.assists}</td>
-                              <td>{stat.steals}</td>
-                              <td>{stat.blocks}</td>
+                        {recentGames.length > 0 ? (
+                           recentGames.map((game) => (
+                              <tr key={game.id}>
+                                 <td>{new Date(game.date_time).toLocaleDateString()}</td>
+                                 <td>{game.build_name ?? "—"}</td>
+                                 <td>{game.points_for}</td>
+                                 <td>{game.points_against}</td>
+                                 <td>
+                                    <span className={game.result === "W" ? "text-success" : "text-danger"}>
+                                       {game.result}
+                                    </span>
+                                 </td>
+                                 <td>{game.user_statline?.points ?? 0}</td>
+                                 <td>{game.user_statline?.rebounds ?? 0}</td>
+                                 <td>{game.user_statline?.assists ?? 0}</td>
+                                 <td>{game.user_statline?.steals ?? 0}</td>
+                                 <td>{game.user_statline?.blocks ?? 0}</td>
+                              </tr>
+                           ))
+                        ) : (
+                           <tr>
+                              <td colSpan={10} className="text-center text-muted py-3">
+                                 No games found for this game mode
+                              </td>
                            </tr>
-                        ))}
+                        )}
                      </tbody>
                   </Table>
                </Card.Body>

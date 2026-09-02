@@ -1,6 +1,12 @@
-from sqlalchemy import Column, DateTime, Integer, String, ForeignKey
+from typing import TYPE_CHECKING
+
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
 
 from app.database.database import Base
+
+if TYPE_CHECKING:
+    from app.models.games import Game
 
 
 #Stores the box score images, processed and orignal
@@ -9,8 +15,9 @@ class BoxScoreImage(Base):
 
     id = Column(Integer, primary_key=True)
     user_id = Column(ForeignKey("user_account.id", ondelete="CASCADE"), nullable=False)
-    build_id = Column(ForeignKey("builds.id", ondelete="CASCADE"), nullable=True)
-    friend_build_id = Column(ForeignKey("builds.id", ondelete="CASCADE"), nullable=True)
+    game_id = Column(ForeignKey("games.id", ondelete="CASCADE"), nullable=True)
     original_path = Column(String, nullable=False)
     processed_path = Column(String)
     created_at = Column(DateTime)
+
+    game = relationship("Game", back_populates="box_score_images")

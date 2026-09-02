@@ -3,7 +3,7 @@ import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import { BsList, BsPersonCircle } from "react-icons/bs";
 import { apiFetch } from "../../api.js";
 
-function BaseDashboard({ children, setCurrentPage, currentPage, setUser }) {
+function BaseDashboard({ children, setCurrentPage, currentPage, endSession }) {
    const [showAlert, setShowAlert] = useState(false);
    const [alertMessage, setAlertMessage] = useState('');
 
@@ -24,8 +24,7 @@ function BaseDashboard({ children, setCurrentPage, currentPage, setUser }) {
             return;
          }
 
-         setUser(null);
-         setCurrentPage("login");
+         endSession();
 
       } catch (error) {
          setAlertMessage('Unable to connect to the server.');

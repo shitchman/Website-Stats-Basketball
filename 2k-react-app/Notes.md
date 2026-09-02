@@ -12,6 +12,12 @@ Then open: http://localhost:5173 and http://localhost:8000
 
 CHECKING PROGRESS IN CONSOLE:  console.log("Message:", dataBeingChecked);
 
+REMOVE THE GRIDS ON THE Boxscore output:  Find in code: Delete this once the OCR is working properly
+ AND in cd Frontend:
+
+   Remove-Item Env:OCR_TEMPLATE_GRID_DEBUG
+   npm run backend:dev
+
 
 HTTP methods (routers)
 

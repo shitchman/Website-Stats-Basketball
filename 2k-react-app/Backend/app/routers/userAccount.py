@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Response
 from sqlalchemy.orm import Session
 
-from app.routers.auth import authenticate_user, hash_password, verify_password, getCurrentUser_id
+from app.routers.auth import authenticate_user, create_access_token, getCurrentUser_id, hash_password, set_access_token_cookie, verify_password
 from app.database.database import get_db
 from app.schemas.userAccount import UserAccountCreate, UserAccountOut, LoginRequest, LoginResponse, PasswordConfirmRequest, UserAccountUpdate
 from app.models.userAccount import UserAccountModel
@@ -63,6 +63,14 @@ async def verify_current_password( payload: PasswordConfirmRequest, current_user
 @router.post("/login", response_model=LoginResponse)
 async def login( form: LoginRequest, response: Response, db: Session = Depends(get_db),):
     return authenticate_user(form, db, response)
+
+#Renews the current user's session after recent activity in the application
+@router.post("/session/refresh")
+def refresh_session(response: Response, current_user_id: int = Depends(getCurrentUser_id)):
+    access_token = create_access_token(current_user_id)
+    set_access_token_cookie(response, access_token)
+
+    return {"message": "Session refreshed"}
 
 #Logs out a user by deleting the JWT access token cookie
 @router.post("/logout")

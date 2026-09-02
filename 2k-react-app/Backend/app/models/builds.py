@@ -28,7 +28,6 @@ class BuildModel(Base):
 
     friend: Mapped["FriendModel"] = relationship(back_populates="builds", foreign_keys="BuildModel.friend_id")
     friend_statlines: Mapped[list["PlayerStatline"]] = relationship(back_populates="friend_build", foreign_keys="PlayerStatline.friend_build_id")
-    friend_games: Mapped[list["Game"]] = relationship(back_populates="friend_build", foreign_keys="Game.friend_build_id")
 
     __table_args__ = (
         CheckConstraint(

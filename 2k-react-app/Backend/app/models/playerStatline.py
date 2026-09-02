@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship;
-from sqlalchemy import Integer, String, ForeignKey, CheckConstraint;
+from sqlalchemy import CheckConstraint, ForeignKey, Integer, String, UniqueConstraint;
 
 from app.database.database import Base;
 
@@ -18,8 +18,8 @@ class PlayerStatline(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     game_id: Mapped[int] = mapped_column(Integer, ForeignKey('games.id', ondelete='CASCADE'), nullable=False)
     build_id: Mapped[int] = mapped_column(Integer, ForeignKey('builds.id', ondelete='CASCADE'), nullable=True)
-    friend_id: Mapped[int] = mapped_column(Integer, ForeignKey('friends.id'), nullable=True)
-    friend_build_id: Mapped[int] = mapped_column(Integer, ForeignKey('builds.id'), nullable=True)
+    friend_id: Mapped[int] = mapped_column(Integer, ForeignKey('friends.id', ondelete='CASCADE'), nullable=True)
+    friend_build_id: Mapped[int] = mapped_column(Integer, ForeignKey('builds.id', ondelete='CASCADE'), nullable=True)
 
     points: Mapped[int] = mapped_column(Integer, nullable=False)
     rebounds: Mapped[int] = mapped_column(Integer, nullable=False)
@@ -51,5 +51,6 @@ class PlayerStatline(Base):
             """,
             name="statline_player_type_check"
         ),
+        UniqueConstraint("game_id", "friend_id", name="unique_friend_statline_per_game"),
     )
 

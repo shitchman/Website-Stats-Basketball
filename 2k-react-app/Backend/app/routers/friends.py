@@ -1,17 +1,15 @@
-from pathlib import Path
-
 from fastapi import APIRouter, Depends, HTTPException, Response
-from sqlalchemy import func, or_
+from sqlalchemy import case, func, or_
 from sqlalchemy.orm import Session
 
+from app.models.games import Game
 from app.routers.auth import getCurrentUser_id
 from app.database.database import get_db
-from app.schemas.friends import FriendCreate, FriendOut, FriendUpdate
+from app.schemas.friends import FriendCreate, FriendOut, FriendUpdate, FriendDashboardStats
 from app.models.friends import FriendModel
 from app.models.builds import BuildModel
-from app.models.boxScoreImage import BoxScoreImage
-from app.models.games import Game
 from app.models.playerStatline import PlayerStatline
+from app.services.matchRemoval import delete_image_files, delete_orphaned_games
 
 router = APIRouter();
 
@@ -32,6 +30,39 @@ async def get_friends(current_user_id: int = Depends(getCurrentUser_id),db: Sess
         for friend, friend_build_count in friends
     ]
 
+
+#Returns the friends stats for the dashboard
+@router.get("/friendDashboardStats", response_model=list[FriendDashboardStats])
+async def get_friend_stats(game_mode_id: int | None = None, current_user_id: int = Depends(getCurrentUser_id), db: Session = Depends(get_db)):
+   query = (db.query(
+      FriendModel.id.label("id"),
+      FriendModel.name.label("name"),
+      func.avg(PlayerStatline.points).label("ppg"),
+      func.count(func.distinct(PlayerStatline.game_id)).label("games_played"),
+      func.sum(case((Game.result == "W", 1), else_=0)).label("wins"),
+   )
+   .join(PlayerStatline, PlayerStatline.friend_id == FriendModel.id)
+   .join(Game, Game.id == PlayerStatline.game_id)
+   .filter(FriendModel.user_id == current_user_id, Game.user_id == current_user_id,)
+)
+   if game_mode_id is not None:
+    query = query.filter(Game.game_mode_id == game_mode_id)
+
+   rows = query.group_by(FriendModel.id, FriendModel.name).all()
+
+   return [
+      {
+         "id": row.id,
+         "name": row.name,
+         "ppg": round(row.ppg, 2) if row.ppg is not None else 0.0,
+         "games_played": row.games_played,
+         "win_percentage": round((row.wins or 0) / row.games_played * 100, 2) if row.games_played else 0.0,
+      }
+      for row in rows
+   ]
+
+
+   
 
 #Adds a new friend to the current user's friend list and returns the created friend
 @router.post("/addNewFriend", response_model=FriendOut)
@@ -66,7 +97,7 @@ async def update_friend( updates: FriendUpdate, friend_id: int, current_user_id:
     return friend
 
 
-# Deletes a friend and the friend's builds and statlines.
+# Deletes a friend, the friend's builds, and their participation statlines.
 @router.delete("/deleteFriend", status_code=204, response_class=Response)
 async def delete_friend(friend_id: int, current_user_id: int = Depends(getCurrentUser_id), db: Session = Depends(get_db)):
     friend = db.query(FriendModel).filter((FriendModel.id == friend_id) & (FriendModel.user_id == current_user_id)).first()
@@ -78,43 +109,19 @@ async def delete_friend(friend_id: int, current_user_id: int = Depends(getCurren
         build.id for build in db.query(BuildModel).filter(BuildModel.friend_id == friend_id).all()
     }
 
-    attached_games = db.query(Game).filter(or_(Game.friend_id == friend_id, Game.friend_build_id.in_(friend_build_ids))).all()
-    attached_images = db.query(BoxScoreImage).filter(BoxScoreImage.friend_build_id.in_(friend_build_ids)).all()
-
-    surviving_build_ids = {
-        reference_id
-        for item in [*attached_games, *attached_images]
-        for reference_id in (item.build_id, item.friend_build_id)
-        if reference_id is not None and reference_id not in friend_build_ids
-    }
-    surviving_build_ids = {
-        row.id for row in db.query(BuildModel.id).filter(BuildModel.id.in_(surviving_build_ids)).all()
-    }
-
-    files_to_delete = []
-    for image in attached_images:
-        other_build_id = image.build_id
-        if other_build_id not in surviving_build_ids:
-            files_to_delete.extend(
-                path for path in (image.original_path, image.processed_path)
-                if path
-            )
-            db.delete(image)
-
-    for game in attached_games:
-        other_build_id = game.build_id
-        if other_build_id not in surviving_build_ids:
-            db.delete(game)
-
+    statline_filter = PlayerStatline.friend_id == friend_id
     if friend_build_ids:
-        db.query(PlayerStatline).filter(PlayerStatline.friend_build_id.in_(friend_build_ids)).delete(synchronize_session=False)
-        db.query(BuildModel).filter(BuildModel.id.in_(friend_build_ids)).delete(synchronize_session=False)
+        statline_filter = or_(statline_filter, PlayerStatline.friend_build_id.in_(friend_build_ids))
 
+    db.query(PlayerStatline).filter(statline_filter).delete(synchronize_session=False)
+    if friend_build_ids:
+        db.query(BuildModel).filter(BuildModel.id.in_(friend_build_ids)).delete(synchronize_session=False)
     db.delete(friend)
+    db.flush()
+    files_to_delete = delete_orphaned_games(db)
     db.commit()
 
-    for path in set(files_to_delete):
-        Path(path).unlink(missing_ok=True)
+    delete_image_files(files_to_delete)
 
     return Response(status_code=204)
 

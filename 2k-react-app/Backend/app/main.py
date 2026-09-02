@@ -2,14 +2,14 @@ from fastapi import FastAPI, Depends;
 from fastapi.middleware.cors import CORSMiddleware;
 
 from typing import Annotated;
-import os;
+# import os;
 from sqlalchemy.orm import Session;
 
-from app.routers import userAccount as userAccount_router, auth as auth_router, friends as friends_router, builds as builds_router;
+from app.routers import userAccount as userAccount_router, auth as auth_router, friends as friends_router, builds as builds_router, uploads as uploads_router, games as games_router;
 from app.database.database import Base, get_db, engine;
 
 # Imports every model module so all tables/relationships are registered on Base before create_all/mapper configuration
-from app.models import boxScoreImage, builds, friends, gameModes, games, playerStatline, userAccount;
+from app.models import boxScoreImage, builds, friends, gameModes, games, playerStatline, teamStatline, userAccount;
 
 
 
@@ -57,6 +57,16 @@ app.include_router(
     prefix='/builds',
 )
 
+app.include_router(
+    uploads_router.router,
+    prefix='/uploads',
+)
+
+app.include_router(
+    games_router.router,
+    prefix='/games',
+)
+
 
 #Defines all of the current routes witin the FastAPI app. Each route is associated with a specific endpoint and HTTP method, and returns a JSON response when accessed. These routes can be expanded to include more functionality as needed.
 @app.get("/")
@@ -72,7 +82,7 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 
 # Clears the database on each startup whilst in development environment. The creates the database tables based on the models defined in models.py. This ensures that the necessary tables are created in the database when the application starts.
-if os.getenv("ENVIRONMENT") != "production":
-    Base.metadata.drop_all(bind=engine)
+# if os.getenv("ENVIRONMENT") != "production":
+#     Base.metadata.drop_all(bind=engine)
     
 Base.metadata.create_all(bind=engine)

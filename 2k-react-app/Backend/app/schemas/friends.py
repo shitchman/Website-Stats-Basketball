@@ -20,6 +20,14 @@ class FriendUpdate(BaseModel):
    name: str | None = None
    online_ID: str | None = None
 
+class FriendDashboardStats(BaseModel):
+    model_config = ConfigDict(from_attributes=True) 
+    
+    id: int
+    name: str
+    ppg: float
+    games_played: int
+    win_percentage: float
 
 
 

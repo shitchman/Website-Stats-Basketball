@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Button } from "react-bootstrap";
 
-function BoxScoreCropper({ imageUrl, onCrop }) {
+function BoxScoreCropper({ imageUrl, onCrop, instructionText = "Draw a crop area", confirmButtonText = "Confirm Crop" }) {
 
    const imageRef = useRef(null);
 
@@ -42,12 +42,31 @@ function BoxScoreCropper({ imageUrl, onCrop }) {
       if (!cropArea) {
          return;
       }
-      onCrop(cropArea);
+
+      const imageElement = imageRef.current;
+      if (!imageElement) {
+         return;
+      }
+
+      const rect = imageElement.getBoundingClientRect();
+      const scaleX = imageElement.naturalWidth / rect.width;
+      const scaleY = imageElement.naturalHeight / rect.height;
+
+      const sourceCropArea = {
+         x: Math.round(cropArea.x * scaleX),
+         y: Math.round(cropArea.y * scaleY),
+         width: Math.round(cropArea.width * scaleX),
+         height: Math.round(cropArea.height * scaleY)
+      };
+
+      onCrop(sourceCropArea);
    };
 
 
    return (
       <div>
+         <p className="mb-3 fw-light">{instructionText}</p>
+
          <div style={{ position: "relative", display: "inline-block" }} onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
 
             <img ref={imageRef} src={imageUrl} alt="Box score" style={{ maxWidth: "100%", display: "block", userSelect: "none" }} />
@@ -59,7 +78,7 @@ function BoxScoreCropper({ imageUrl, onCrop }) {
 
          <div className="mt-3 d-flex justify-content-between">
             <Button variant="warning" onClick={handleCrop} disabled={!cropArea}>
-               Confirm Crop
+               {confirmButtonText}
             </Button>
 
             <Button variant="warning" onClick={() => setCropArea(null)} disabled={!cropArea}>

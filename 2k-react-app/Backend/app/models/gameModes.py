@@ -13,7 +13,7 @@ class GameModes(Base):
     __tablename__ = 'game_modes'
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True, nullable=False)
-    mode_name: Mapped[str] = mapped_column(String(20), nullable=False) #Will be selected from a dropdown menu of game modes including: 3v3 Park, 5v5 Park, 3v3 Pro-Am, 5v5 Pro-Am, Rec Center, etc
+    mode_name: Mapped[str] = mapped_column(String(20), nullable=False) #Will be selected from a dropdown menu of game modes including: 3v3 Park, 5v5 Park, 3v3 Crew, 5v5 Crew, Rec Center, etc
 
     games: Mapped[list["Game"]] = relationship( back_populates="game_mode")
 
