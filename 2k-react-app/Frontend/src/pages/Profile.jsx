@@ -10,8 +10,9 @@ import AddFriend from "../Modals/AddFriend";
 import EditProfile from "../Modals/EditProfile";
 import EditFriend from "../Modals/EditFriend";
 import AccessAuthorisation from "../Modals/AccessAuthorisation.jsx";
+import DeleteAccount from "../Modals/DeleteAccount.jsx";
 
-function Profile({ user, setUser }) {
+function Profile({ user, setUser, endSession }) {
 
    const [activeModal, setActiveModal] = useState(null);
    const [friends, setFriendsList] = useState([]);
@@ -193,7 +194,8 @@ function Profile({ user, setUser }) {
                {activeModal === "editBuild" && <EditBuild setBuilds={setBuildsList} onClose={() => setActiveModal(null)} />}
 
                {activeModal === "accessAuthorisationEditProfile" && <AccessAuthorisation user={user} onVerified={() => setActiveModal("editProfile")} />}
-               {activeModal === "editProfile" && <EditProfile user={user} setUser={setUser} onClose={() => setActiveModal(null)} />}
+               {activeModal === "editProfile" && <EditProfile user={user} setUser={setUser} onClose={() => setActiveModal(null)} onDeleteAccount={() => setActiveModal("deleteAccount")} />}
+               {activeModal === "deleteAccount" && <DeleteAccount onClose={() => setActiveModal(null)} onDeleted={() => { setActiveModal(null); endSession(); }} />}
 
 
             </Modal.Body>

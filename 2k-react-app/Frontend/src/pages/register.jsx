@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Col, Container, Form, Row, Modal } from "react-bootstrap";
 import RegistrationSuccess from "../Modals/RegistrationSuccess.jsx";
+import { apiFetch } from "../../api.js";
 
 function Register({ setCurrentPage }) {
    const [username, setUsername] = useState("");
@@ -30,7 +31,7 @@ function Register({ setCurrentPage }) {
 
       setShowAlert(false);
 
-      const response = await fetch('http://localhost:8000/userAccount/', {
+      const response = await apiFetch('/userAccount/', {
          method: 'POST',
          headers: { 'Content-Type': 'application/json', },
          body: JSON.stringify({ username: username.trim(), password: password.trim(), email: email.trim(), online_ID: onlineID.trim() }),

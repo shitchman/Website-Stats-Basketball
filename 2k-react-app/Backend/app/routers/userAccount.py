@@ -5,6 +5,9 @@ from app.routers.auth import authenticate_user, create_access_token, getCurrentU
 from app.database.database import get_db
 from app.schemas.userAccount import UserAccountCreate, UserAccountOut, LoginRequest, LoginResponse, PasswordConfirmRequest, UserAccountUpdate
 from app.models.userAccount import UserAccountModel
+from app.models.boxScoreImage import BoxScoreImage
+from app.models.games import Game
+from app.services.matchRemoval import delete_image_files
 
 
 
@@ -107,3 +110,27 @@ async def update_current_user( updates: UserAccountUpdate, current_user_id: int 
     db.refresh(user)
 
     return user
+
+
+#Permanently deletes the current user's account along with all associated games, builds and friends
+@router.delete("/me", status_code=204, response_class=Response)
+async def delete_current_user( response: Response, current_user_id: int = Depends(getCurrentUser_id), db: Session = Depends(get_db),):
+
+    user = db.query(UserAccountModel).filter(UserAccountModel.id == current_user_id).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    game_ids = [game_id for (game_id,) in db.query(Game.id).filter(Game.user_id == current_user_id).all()]
+    images = db.query(BoxScoreImage).filter(BoxScoreImage.game_id.in_(game_ids)).all()
+    files_to_delete = [
+        path for image in images for path in (image.original_path, image.processed_path) if path
+    ]
+
+    db.delete(user)
+    db.commit()
+
+    delete_image_files(files_to_delete)
+    response.delete_cookie(key="access_token")
+
+    return Response(status_code=204)

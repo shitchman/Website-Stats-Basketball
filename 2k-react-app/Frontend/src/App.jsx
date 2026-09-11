@@ -44,7 +44,7 @@ function App() {
          case 'stats':
             return (<Stats />);
          case 'profile':
-            return (<Profile user={user} setUser={setUser} />);
+            return (<Profile user={user} setUser={setUser} endSession={endSession} />);
 
          default:
             return (<Home />);

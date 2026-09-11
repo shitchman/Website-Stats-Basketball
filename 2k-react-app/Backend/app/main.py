@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session;
 
 from app.routers import userAccount as userAccount_router, auth as auth_router, friends as friends_router, builds as builds_router, uploads as uploads_router, games as games_router;
 from app.database.database import Base, get_db, engine;
+from app.utils.confg import settings;
 
 # Imports every model module so all tables/relationships are registered on Base before create_all/mapper configuration
 from app.models import boxScoreImage, builds, friends, gameModes, games, playerStatline, teamStatline, userAccount;
@@ -14,12 +15,7 @@ from app.models import boxScoreImage, builds, friends, gameModes, games, playerS
 
 
 #Sets urls which can access the backend API, this is to prevent CORS errors when the frontend tries to access the backend and restrict access to only specific frontend urls
-origins = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-]
+origins = [origin.strip() for origin in settings.cors_origins.split(",") if origin.strip()]
 
 
 #Creates a FastAPI under the name of app

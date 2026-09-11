@@ -363,7 +363,7 @@ function DashboardHome({ user }) {
                                  <td>{game.user_statline?.steals ?? 0}</td>
                                  <td>{game.user_statline?.blocks ?? 0}</td>
                               </tr>
-                           ))
+                           )) 
                         ) : (
                            <tr>
                               <td colSpan={10} className="text-center text-muted py-3">

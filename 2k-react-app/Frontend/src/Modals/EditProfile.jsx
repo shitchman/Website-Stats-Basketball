@@ -4,7 +4,7 @@ import { Container, Row, Card, Button, Form, Col } from "react-bootstrap";
 import { apiFetch } from "../../api.js";
 
 
-function EditProfile({ user, setUser, onClose }) {
+function EditProfile({ user, setUser, onClose, onDeleteAccount }) {
    const [userName, setUserName] = useState(user?.username ?? '');
    const [userEmail, setUserEmail] = useState(user?.email ?? '');
    const [userOnlineID, setUserOnlineID] = useState(user?.online_ID ?? '');
@@ -152,9 +152,15 @@ function EditProfile({ user, setUser, onClose }) {
                         />
                      </Form.Group>
 
-                     <Button type="submit" variant="primary" id="registerButton" disabled={isSubmitting}>
-                        {isSubmitting ? 'Saving...' : 'Save'}
-                     </Button>
+                     <div className="d-flex justify-content-between">
+                        <Button type="button" variant="danger" id="deleteAccountButton" onClick={onDeleteAccount}>
+                           Delete
+                        </Button>
+
+                        <Button type="submit" variant="primary" id="registerButton" disabled={isSubmitting}>
+                           {isSubmitting ? 'Saving...' : 'Save'}
+                        </Button>
+                     </div>
                   </Form>
                </Card.Body>
             </Card>
