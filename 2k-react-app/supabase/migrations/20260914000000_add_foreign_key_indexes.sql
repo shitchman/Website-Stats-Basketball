@@ -1,0 +1,13 @@
+create index if not exists friends_user_id_idx on public.friends(user_id);
+create index if not exists builds_user_id_idx on public.builds(user_id);
+create index if not exists builds_friend_id_idx on public.builds(friend_id);
+create index if not exists games_user_id_idx on public.games(user_id);
+create index if not exists games_game_mode_id_idx on public.games(game_mode_id);
+create index if not exists games_build_id_idx on public.games(build_id);
+create index if not exists player_statlines_game_id_idx on public.player_statlines(game_id);
+create index if not exists player_statlines_build_id_idx on public.player_statlines(build_id);
+create index if not exists player_statlines_friend_id_idx on public.player_statlines(friend_id);
+create index if not exists player_statlines_friend_build_id_idx on public.player_statlines(friend_build_id);
+create index if not exists team_statlines_game_id_idx on public.team_statlines(game_id);
+create index if not exists box_score_images_user_id_idx on public.box_score_images(user_id);
+create index if not exists box_score_images_game_id_idx on public.box_score_images(game_id);

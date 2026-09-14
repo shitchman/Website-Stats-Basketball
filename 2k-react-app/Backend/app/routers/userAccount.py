@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Response
 from sqlalchemy.orm import Session
 
-from app.routers.auth import authenticate_user, create_access_token, getCurrentUser_id, hash_password, set_access_token_cookie, verify_password
+from app.routers.auth import authenticate_user, clear_access_token_cookie, create_access_token, getCurrentUser_id, hash_password, set_access_token_cookie, verify_password
 from app.database.database import get_db
 from app.schemas.userAccount import UserAccountCreate, UserAccountOut, LoginRequest, LoginResponse, PasswordConfirmRequest, UserAccountUpdate
 from app.models.userAccount import UserAccountModel
@@ -13,16 +13,6 @@ from app.services.matchRemoval import delete_image_files
 
 router = APIRouter();
 
-
-
-#Returns all user accounts in the database
-@router.get("/", response_model=list[UserAccountOut])
-async def get_user_account(
-    db: Session = Depends(get_db)
-):
-    user_accounts = db.query(UserAccountModel).all()
-
-    return user_accounts
 
 #Returns the current user account based on the access token in the request
 @router.get("/me")
@@ -79,7 +69,7 @@ def refresh_session(response: Response, current_user_id: int = Depends(getCurren
 @router.post("/logout")
 def logout(response: Response):
 
-    response.delete_cookie( key="access_token" )
+    clear_access_token_cookie(response)
 
     return { "message": "Logged out" }
 
@@ -131,6 +121,7 @@ async def delete_current_user( response: Response, current_user_id: int = Depend
     db.commit()
 
     delete_image_files(files_to_delete)
-    response.delete_cookie(key="access_token")
+    clear_access_token_cookie(response)
+    response.status_code = 204
 
-    return Response(status_code=204)
+    return response

@@ -77,8 +77,7 @@ async def root():
 db_dependency = Annotated[Session, Depends(get_db)]
 
 
-# Clears the database on each startup whilst in development environment. The creates the database tables based on the models defined in models.py. This ensures that the necessary tables are created in the database when the application starts.
-# if os.getenv("ENVIRONMENT") != "production":
-#     Base.metadata.drop_all(bind=engine)
-    
-Base.metadata.create_all(bind=engine)
+# Local development can bootstrap an empty database. Production schema changes are
+# applied through the checked-in Supabase migrations before the service is deployed.
+if settings.environment.lower() != "production":
+    Base.metadata.create_all(bind=engine)

@@ -13,6 +13,14 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
+    @property
+    def cookie_secure(self) -> bool:
+        return self.environment.lower() == "production"
+
+    @property
+    def cookie_samesite(self) -> str:
+        return "none" if self.cookie_secure else "lax"
+
 
 settings = Settings()
 

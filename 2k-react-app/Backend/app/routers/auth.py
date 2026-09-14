@@ -46,9 +46,17 @@ def set_access_token_cookie(response: Response, access_token: str):
         key="access_token",
         value=access_token,
         httponly=True,
-        secure=False,
-        samesite="lax",
+        secure=settings.cookie_secure,
+        samesite=settings.cookie_samesite,
         max_age=SESSION_IDLE_TIMEOUT_SECONDS,
+    )
+
+
+def clear_access_token_cookie(response: Response):
+    response.delete_cookie(
+        key="access_token",
+        secure=settings.cookie_secure,
+        samesite=settings.cookie_samesite,
     )
 
 
