@@ -24,14 +24,14 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: Frontend/package-lock.json
+          cache-dependency-path: 2k-react-app/Frontend/package-lock.json
 
       - name: Install dependencies
-        working-directory: Frontend
+        working-directory: 2k-react-app/Frontend
         run: npm ci
 
       - name: Build frontend
-        working-directory: Frontend
+        working-directory: 2k-react-app/Frontend
         env:
           VITE_API_BASE_URL: https://twok-stats-website.onrender.com
         run: npm run build
@@ -42,7 +42,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: Frontend/dist
+          path: 2k-react-app/Frontend/dist
 
   deploy:
     environment:
