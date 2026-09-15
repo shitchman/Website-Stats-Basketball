@@ -44,14 +44,14 @@ The production services are:
 
 ### Deploy FastAPI to Render
 
-1. Push this repository to GitHub, then create a Render **Blueprint** from it and set the Blueprint path to `2k-react-app/Backend/render.yaml`. The Blueprint configures the Dockerfile, project-directory build context, health check, and runtime environment.
+1. Push this repository to GitHub, then create a Render **Blueprint** from it and set the Blueprint path to `2k-react-app/Backend/render.yaml`. The Blueprint configures the Dockerfile, backend-directory build context, health check, and runtime environment.
 2. During Blueprint creation, provide these values when Render prompts for them:
 
 ```dotenv
 DATABASE_URL=postgresql+psycopg://postgres.PROJECT_REF:URL_ENCODED_PASSWORD@aws-0-REGION.pooler.supabase.com:5432/postgres?sslmode=require
 ```
 
-Use the Supabase **Connect > Session pooler** URI for `DATABASE_URL` and URL-encode special characters in its password. Render generates `SECRET_KEY`; `ENVIRONMENT=production` and `CORS_ORIGINS=https://shitchman.github.io` are fixed in the Blueprint. If configuring a Web Service manually instead, use `Backend/Dockerfile` with the repository root as its Docker build context and set all four variables from `Backend/.env.example`.
+Use the Supabase **Connect > Session pooler** URI for `DATABASE_URL` and URL-encode special characters in its password. Render generates `SECRET_KEY`; `ENVIRONMENT=production` and `CORS_ORIGINS=https://shitchman.github.io` are fixed in the Blueprint. If configuring a Web Service manually instead, use `2k-react-app/Backend/Dockerfile` with `2k-react-app/Backend` as its Docker build context and set all four variables from `2k-react-app/Backend/.env.example`.
 
 3. The deployed API is available at `https://twok-stats-website.onrender.com`.
 

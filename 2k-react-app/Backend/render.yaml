@@ -4,7 +4,7 @@ services:
     runtime: docker
     plan: free
     dockerfilePath: ./2k-react-app/Backend/Dockerfile
-    dockerContext: ./2k-react-app
+    dockerContext: ./2k-react-app/Backend
     healthCheckPath: /
     autoDeployTrigger: commit
     envVars:
