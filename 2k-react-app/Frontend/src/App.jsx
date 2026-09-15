@@ -1,9 +1,9 @@
 import BaseAuthentication from './components/AuthenticationNavbar.jsx';
 import BaseDashboard from './components/DashboardNavbar.jsx';
 
-import Home from './pages/Home.jsx';
-import Login from './pages/Login.jsx';
-import Register from './pages/Register.jsx';
+import Home from './pages/home.jsx';
+import Login from './pages/login.jsx';
+import Register from './pages/register.jsx';
 
 import DashboardHome from './pages/DashboardHome.jsx';
 import AddGames from './pages/AddGames.jsx';

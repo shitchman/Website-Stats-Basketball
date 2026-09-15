@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Col, Container, Form, Row, Modal } from "react-bootstrap";
-import RegistrationSuccess from "../Modals/RegistrationSuccess.jsx";
+import RegistrationSuccess from "../Modals/registrationSuccess.jsx";
 import { apiFetch } from "../../api.js";
 
 function Register({ setCurrentPage }) {

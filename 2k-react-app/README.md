@@ -44,7 +44,7 @@ The production services are:
 
 ### Deploy FastAPI to Render
 
-1. Push this repository to GitHub, then create a Render **Blueprint** from it and set the Blueprint path to `Backend/render.yaml`. The Blueprint configures the Dockerfile, repository-root build context, health check, and runtime environment.
+1. Push this repository to GitHub, then create a Render **Blueprint** from it and set the Blueprint path to `2k-react-app/Backend/render.yaml`. The Blueprint configures the Dockerfile, project-directory build context, health check, and runtime environment.
 2. During Blueprint creation, provide these values when Render prompts for them:
 
 ```dotenv
